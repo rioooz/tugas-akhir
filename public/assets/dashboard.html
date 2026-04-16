@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard Pelanggan</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <a class="brand" href="index.html">MAHESTY MEBEL</a>
+      <div class="spacer"></div>
+      <div class="search"><input placeholder="Search..." /></div>
+      <a class="nav-link" href="dashboard.html">Dashboard</a>
+      <a class="nav-link" href="riwayat.html">Riwayat</a>
+      <a class="nav-link" href="pelanggan.html">Pelanggan</a>
+      <a class="btn" href="cart.html">Cart (0)</a>
+      <a class="btn-outline" href="login.html">Login / Register</a>
+    </header>
+    <main class="container">
+      <section id="dashboard-section" style="margin-top:24px">
+        <div class="section-title">Dashboard Pelanggan</div>
+        <div class="dashboard-box">
+          <div>Selamat datang di Mahesty Mebel.</div>
+          <div class="muted small" style="margin-top: 8px">Dari halaman ini Anda dapat melihat riwayat pesanan Anda.</div>
+          <div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap">
+            <div class="panel" style="min-width:160px">Total Pesanan: <b>12</b></div>
+            <div class="panel" style="min-width:160px">Menunggu Pembayaran: <b>1</b></div>
+            <div class="panel" style="min-width:160px">Sudah Tiba: <b>8</b></div>
+          </div>
+          <div style="margin-top:8px; display:flex; gap:8px">
+            <a id="goto-riwayat" class="btn-outline" href="riwayat.html">Lihat Riwayat Pembelian</a>
+            <a id="download-my-orders" class="btn-outline" href="riwayat.html">Download Riwayat (CSV)</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

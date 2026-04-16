@@ -1,0 +1,216 @@
+@extends('layouts.admin')
+
+@section('page_title', 'Tambah Produk Baru')
+@section('breadcrumb', 'Tambah Produk')
+
+@section('content')
+    <style>
+        .form-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .form-title {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            padding: 20px;
+            border-top: 1px solid #e9ecef;
+            background: #f8f9fa;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .error-text {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <a href="{{ route('admin.barang.index') }}" class="back-link">← Kembali ke Daftar Produk</a>
+
+    <div class="form-card">
+        <div class="form-header">
+            <h3 class="form-title">Tambah Produk Baru</h3>
+        </div>
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <strong>Perbaiki kesalahan berikut:</strong>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('admin.barang.store') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-body">
+                @csrf
+
+                <div class="form-group">
+                    <label for="name" class="form-label">Nama Produk *</label>
+                    <input type="text" name="name" id="name"
+                        class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required>
+                    @error('name')
+                        <div class="error-text">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="price" class="form-label">Harga (Rp) *</label>
+                    <input type="number" name="price" id="price"
+                        class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" required
+                        min="0" step="1000">
+                    @error('price')
+                        <div class="error-text">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="stock" class="form-label">Stok (pcs) *</label>
+                    <input type="number" name="stock" id="stock"
+                        class="form-control @error('stock') is-invalid @enderror" value="{{ old('stock') }}" required
+                        min="0">
+                    @error('stock')
+                        <div class="error-text">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="description" class="form-label">Deskripsi</label>
+                    <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
+                    @error('description')
+                        <div class="error-text">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="image" class="form-label">Gambar Produk</label>
+                    <input type="file" name="image" id="image"
+                        class="form-control @error('image') is-invalid @enderror" accept="image/*">
+                    <small style="color: #666; margin-top: 5px; display: block;">Format: JPG, PNG (Max: 2MB)</small>
+                    @error('image')
+                        <div class="error-text">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Simpan Produk</button>
+                <a href="{{ route('admin.barang.index') }}" class="btn btn-secondary">Batal</a>
+            </div>
+        </form>
+    </div>
+@endsection

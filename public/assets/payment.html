@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Metode Pembayaran</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <a class="brand" href="index.html">MAHESTY MEBEL</a>
+      <div class="spacer"></div>
+      <div class="search"><input placeholder="Search..." /></div>
+      <a class="nav-link" href="dashboard.html">Dashboard</a>
+      <a class="nav-link" href="riwayat.html">Riwayat</a>
+      <a class="nav-link" href="pelanggan.html">Pelanggan</a>
+      <a class="btn" href="cart.html">Cart (2)</a>
+      <a class="btn-outline" href="login.html">Login / Register</a>
+    </header>
+    <main class="container">
+      <section id="payment-section">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h2>Metode Pembayaran</h2>
+          <a class="btn-outline" href="cart.html">Kembali</a>
+        </div>
+        <div class="panel" style="max-width:780px; margin:0 auto">
+          <div class="muted">e-Wallet :</div>
+          <div class="select">
+            <label class="method"><input type="radio" name="pay" /> DANA</label>
+            <label class="method"><input type="radio" name="pay" /> GoPay</label>
+          </div>
+          <div style="margin-top:12px" class="muted">Bank transfer :</div>
+          <div class="select">
+            <label class="method"><input type="radio" name="pay" /> BCA</label>
+            <label class="method"><input type="radio" name="pay" /> BNI</label>
+          </div>
+          <div style="margin-top:12px" class="muted">Cash di Outlet :</div>
+          <div class="select">
+            <label class="method"><input type="radio" name="pay" /> Indomaret</label>
+            <label class="method"><input type="radio" name="pay" /> Alfamart</label>
+          </div>
+          <div style="display:flex; justify-content:flex-end; margin-top:16px">
+            <a class="btn" href="success.html">Konfirmasi</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

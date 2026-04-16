@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Keranjang</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <a class="brand" href="index.html">MAHESTY MEBEL</a>
+      <div class="spacer"></div>
+      <div class="search"><input placeholder="Search..." /></div>
+      <a class="nav-link" href="dashboard.html">Dashboard</a>
+      <a class="nav-link" href="riwayat.html">Riwayat</a>
+      <a class="nav-link" href="pelanggan.html">Pelanggan</a>
+      <a class="btn" href="cart.html">Cart (2)</a>
+      <a class="btn-outline" href="login.html">Login / Register</a>
+    </header>
+    <main class="container">
+      <section id="cart-section">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h2>Keranjang</h2>
+          <a class="btn-outline" href="index.html">Kembali</a>
+        </div>
+        <div class="two-col">
+          <div>
+            <div class="panel">
+              <div id="cart-items">
+                <div class="cart-item">
+                  <div class="mini">IMG</div>
+                  <div style="flex:1;">
+                    <div style="font-weight:700">Meja Rias Kayu Jati</div>
+                    <div class="muted small">Qty 1</div>
+                  </div>
+                  <div style="font-weight:700; color:var(--red)">Rp800.000</div>
+                </div>
+                <div class="cart-item">
+                  <div class="mini">IMG</div>
+                  <div style="flex:1;">
+                    <div style="font-weight:700">Rak Buku</div>
+                    <div class="muted small">Qty 1</div>
+                  </div>
+                  <div style="font-weight:700; color:var(--red)">Rp350.000</div>
+                </div>
+              </div>
+              <div style="margin-top:12px">
+                <div class="muted">Alamat</div>
+                <div style="padding:12px; background:var(--muted); border-radius:8px; margin-top:8px;">
+                  Jl. Boyong, Kec. Pakem, Kota Sleman, Yogyakarta
+                </div>
+                <div style="display:flex; gap:12px; margin-top:12px; align-items:center;">
+                  <div style="flex:1">
+                    <label class="muted small">Garansi Tiba</label>
+                    <select style="width:100%; padding:10px; border-radius:8px; border:1px solid #eee; margin-top:6px;">
+                      <option>Reguler (3-5 hari)</option>
+                      <option>Express (1-2 hari)</option>
+                    </select>
+                  </div>
+                  <div style="width:160px">
+                    <label class="muted small">Pengiriman</label>
+                    <select style="width:100%; padding:10px; border-radius:8px; border:1px solid #eee; margin-top:6px;">
+                      <option>JNE - Rp22.000</option>
+                      <option>TIKI - Rp25.000</option>
+                    </select>
+                  </div>
+                </div>
+                <div style="display:flex; justify-content:flex-end; margin-top:12px; gap:8px;">
+                  <a class="btn" href="payment.html">Konfirmasi</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="panel">
+              <div style="display:flex; justify-content:space-between">
+                <div>Total Harga</div>
+                <div>Rp1.150.000</div>
+              </div>
+              <div style="display:flex; justify-content:space-between; margin-top:8px;">
+                <div>Total Pengiriman</div>
+                <div>Rp22.000</div>
+              </div>
+              <hr style="margin:12px 0; border:none; border-top:1px solid #eee" />
+              <div style="display:flex; justify-content:space-between; font-weight:800;">
+                <div>TOTAL</div>
+                <div>Rp1.172.000</div>
+              </div>
+              <div style="margin-top:12px; display:flex; justify-content:center">
+                <a class="btn" href="payment.html">PEMBAYARAN →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
