@@ -2,9 +2,6 @@
 
 @section('title', 'Keranjang Belanja')
 
-@php
-    $shipping = 1000; // Contoh biaya pengiriman
-@endphp
 
 @section('extra_css')
     <style>
@@ -275,7 +272,6 @@
 @section('extra_js')
     <script>
         const cartItems = @json($cartItems);
-        const shipping = {{ $shipping }};
 
         function updateQuantity(productId, newQuantity) {
             // Validasi quantity
@@ -422,11 +418,11 @@
                     </div>
                     <div class="cart-item-quantity">
                         <button type="button" id="btn-minus-{{ $item['id'] }}"
-                            onclick="updateQuantity({{ $item['id'] }}, {{ $item['quantity'] - 1 }})"
+                            onclick="updateQuantity('{{ $item['id'] }}', {{ $item['quantity'] - 1 }})"
                             {{ $item['quantity'] <= 1 ? 'disabled' : '' }}>-</button>
                         <input type="text" id="quantity-{{ $item['id'] }}" value="{{ $item['quantity'] }}" readonly>
                         <button type="button" id="btn-plus-{{ $item['id'] }}"
-                            onclick="updateQuantity({{ $item['id'] }}, {{ $item['quantity'] + 1 }})"
+                            onclick="updateQuantity('{{ $item['id'] }}', {{ $item['quantity'] + 1 }})"
                             {{ $item['quantity'] >= $item['stock'] ? 'disabled' : '' }}>+</button>
                     </div>
                     <div class="cart-item-subtotal" id="subtotal-{{ $item['id'] }}">
@@ -454,20 +450,16 @@
                 </div>
             @endforeach
 
-            <div class="cart-summary-container">
+              <div class="cart-summary-container">
                 <div></div>
                 <div class="cart-summary">
                     <div class="summary-row">
                         <span>Subtotal</span>
                         <span id="cart-subtotal">Rp {{ number_format($total, 0, ',', '.') }}</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Pengiriman</span>
-                        <span>Rp {{ number_format($shipping, 0, ',', '.') }}</span>
-                    </div>
+</div>
                     <div class="summary-row summary-total">
                         <span>Total</span>
-                        <span id="cart-total">Rp {{ number_format($total + $shipping, 0, ',', '.') }}</span>
+                        <span id="cart-total">Rp {{ number_format($total , 0, ',', '.') }}</span>
                     </div>
                     <div class="checkout-btn-container">
                         <a href="{{ route('checkout.index') }}" class="btn">Lanjutkan ke Checkout</a>

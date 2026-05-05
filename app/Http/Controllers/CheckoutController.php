@@ -44,14 +44,41 @@ class CheckoutController extends Controller
         $cartItems = [];
         $subtotal = 0;
 
-        foreach ($cart as $productId => $item) {
-            $product = ProductItem::find($productId);
-            if ($product) {
-                $itemTotal = $product->price * $item['quantity'];
+        foreach ($cart as $cartKey => $item) {
+            // support variant keys like 'detail_{id}'
+            if (is_string($cartKey) && str_starts_with($cartKey, 'detail_')) {
+                $detailId = (int) str_replace('detail_', '', $cartKey);
+                $detail = \App\Models\ProductItemDetail::find($detailId);
+                if (!$detail) continue;
+                $parent = $detail->productItem;
+                $price = $item['price'] ?? $detail->price;
+                $itemTotal = $price * $item['quantity'];
+                $name =  $detail->name . ($detail->size ? ' (' . $detail->size . ')' : '');
+
                 $cartItems[] = [
+                    'key' => $cartKey,
+                    'id' => $parent->id,
+                    'detail_id' => $detail->id,
+                    'name' => $name,
+                    'price' => $price,
+                    'quantity' => $item['quantity'],
+                    'image' => $parent->image ? asset($parent->image) : 'https://via.placeholder.com/100x100',
+                    'subtotal' => $itemTotal,
+                ];
+                $subtotal += $itemTotal;
+            } else {
+                $productId = $cartKey;
+                $product = ProductItem::find($productId);
+                if (!$product) continue;
+                $price = $item['price'] ?? $product->price;
+                $itemTotal = $price * $item['quantity'];
+
+                $cartItems[] = [
+                    'key' => $cartKey,
                     'id' => $product->id,
+                    'detail_id' => null,
                     'name' => $product->name,
-                    'price' => $product->price,
+                    'price' => $price,
                     'quantity' => $item['quantity'],
                     'image' => $product->image ? asset($product->image) : 'https://via.placeholder.com/100x100',
                     'subtotal' => $itemTotal,
@@ -60,10 +87,9 @@ class CheckoutController extends Controller
             }
         }
 
-        $shipping = 1000; // Biaya pengiriman
-        $total = $subtotal + $shipping;
+        $total = $subtotal; // shipping can be added later
 
-        return view('checkout.index', compact('cartItems', 'subtotal', 'shipping', 'total'));
+        return view('checkout.index', compact('cartItems', 'subtotal', 'total'));
     }
 
     /**
@@ -84,50 +110,70 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Keranjang Anda kosong.');
         }
 
-        // Validasi stok sebelum checkout
-        foreach ($cart as $productId => $item) {
-            $product = ProductItem::find($productId);
-            if (!$product) {
-                return redirect()->route('cart.index')->with('error', 'Produk tidak ditemukan.');
-            }
-            
-            if ($product->stock < $item['quantity']) {
-                return redirect()->route('cart.index')->with('error', 'Stok produk "' . $product->name . '" tidak mencukupi. Stok tersedia: ' . $product->stock);
+        // Validasi stok sebelum checkout (support variant items)
+        foreach ($cart as $cartKey => $item) {
+            if (is_string($cartKey) && str_starts_with($cartKey, 'detail_')) {
+                $detailId = (int) str_replace('detail_', '', $cartKey);
+                $detail = \App\Models\ProductItemDetail::find($detailId);
+                if (!$detail) {
+                    return redirect()->route('cart.index')->with('error', 'Detail produk tidak ditemukan.');
+                }
+                if ($detail->stock < $item['quantity']) {
+                    return redirect()->route('cart.index')->with('error', 'Stok varian "' . $detail->name . '" tidak mencukupi. Stok tersedia: ' . $detail->stock);
+                }
+            } else {
+                $product = ProductItem::find($cartKey);
+                if (!$product) {
+                    return redirect()->route('cart.index')->with('error', 'Produk tidak ditemukan.');
+                }
+                if ($product->stock < $item['quantity']) {
+                    return redirect()->route('cart.index')->with('error', 'Stok produk "' . $product->name . '" tidak mencukupi. Stok tersedia: ' . $product->stock);
+                }
             }
         }
 
         DB::beginTransaction();
         try {
-            // Hitung total
+            // Hitung total dan buat daftar item untuk Midtrans
             $subtotal = 0;
             $itemDetails = [];
-            
-            foreach ($cart as $productId => $item) {
-                $product = ProductItem::find($productId);
-                if ($product) {
-                    $itemTotal = $product->price * $item['quantity'];
-                    $subtotal += $itemTotal;
-                    
+
+            foreach ($cart as $cartKey => $item) {
+                if (is_string($cartKey) && str_starts_with($cartKey, 'detail_')) {
+                    $detailId = (int) str_replace('detail_', '', $cartKey);
+                    $detail = \App\Models\ProductItemDetail::find($detailId);
+                    if (!$detail) continue;
+                    $parent = $detail->productItem;
+                    $price = (int) ($item['price'] ?? $detail->price);
+                    $qty = (int) $item['quantity'];
+                    $subtotal += $price * $qty;
+
+                    $itemDetails[] = [
+                        'id' => 'D' . $detail->id,
+                        'price' => $price,
+                        'quantity' => $qty,
+                        'name' => $parent->name . ' - ' . $detail->name,
+                    ];
+                } else {
+                    $product = ProductItem::find($cartKey);
+                    if (!$product) continue;
+                    $price = (int) ($item['price'] ?? $product->price);
+                    $qty = (int) $item['quantity'];
+                    $subtotal += $price * $qty;
+
                     $itemDetails[] = [
                         'id' => (string) $product->id,
-                        'price' => (int) $product->price,
-                        'quantity' => (int) $item['quantity'],
+                        'price' => $price,
+                        'quantity' => $qty,
                         'name' => $product->name,
                     ];
                 }
             }
-            
-            $shipping = 1000;
-            $total = $subtotal + $shipping;
 
-            // Tambahkan shipping sebagai item detail
-            $itemDetails[] = [
-                'id' => 'SHIPPING',
-                'price' => (int) $shipping,
-                'quantity' => 1,
-                'name' => 'Biaya Pengiriman',
-            ];
+            $total = $subtotal;
 
+            // Tambahkan shipping (kosong untuk saat ini)
+            $shipping = 0;
             // Buat order dengan status pending (belum kurangi stok)
             $order = Order::create([
                 'user_id' => Auth::id(),
@@ -137,16 +183,31 @@ class CheckoutController extends Controller
                 'payment_method' => $request->payment_method,
             ]);
 
-            // Buat order items (belum kurangi stok, akan dikurangi setelah payment success)
-            foreach ($cart as $productId => $item) {
-                $product = ProductItem::find($productId);
-                
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_item_id' => $productId,
-                    'quantity' => $item['quantity'],
-                    'price' => $product->price,
-                ]);
+            // Buat order items (simpan product_item_detail_id jika ada)
+            foreach ($cart as $cartKey => $item) {
+                if (is_string($cartKey) && str_starts_with($cartKey, 'detail_')) {
+                    $detailId = (int) str_replace('detail_', '', $cartKey);
+                    $detail = \App\Models\ProductItemDetail::find($detailId);
+                    if (!$detail) continue;
+
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_item_id' => $detail->product_item_id,
+                        'quantity' => $item['quantity'],
+                        'price' => $item['price'] ?? $detail->price,
+                        'product_item_detail_id' => $detail->id,
+                    ]);
+                } else {
+                    $product = ProductItem::find($cartKey);
+                    if (!$product) continue;
+
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_item_id' => $product->id,
+                        'quantity' => $item['quantity'],
+                        'price' => $item['price'] ?? $product->price,
+                    ]);
+                }
             }
 
             // Prepare Midtrans Snap parameters

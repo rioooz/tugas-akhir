@@ -161,13 +161,23 @@
         .summary-item-details .name {
             font-weight: 600;
             color: var(--text-dark);
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-size: 0.95rem;
         }
 
-        .summary-item-details .quantity {
+        .summary-item-details .meta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
             color: var(--text-light);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+        }
+
+        .summary-item .price {
+            font-weight: 700;
+            color: #0e8f2c;
+            text-align: right;
+            min-width: 120px;
         }
 
         .summary-item .price {
@@ -375,16 +385,19 @@
                 <h2 class="order-summary-title">Ringkasan Pesanan</h2>
 
                 <div class="summary-items">
-                    @foreach ($cartItems as $item)
-                        <div class="summary-item">
-                            <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}">
-                            <div class="summary-item-details">
-                                <div class="name">{{ $item['name'] }}</div>
-                                <div class="quantity">Qty: {{ $item['quantity'] }}</div>
+                        @foreach ($cartItems as $item)
+                            <div class="summary-item">
+                                <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}">
+                                <div class="summary-item-details">
+                                    <div class="name">{{ $item['name'] }}</div>
+                                    <div class="meta">
+                                        <div class="unit-price">Rp {{ number_format($item['price'] ?? (int)($item['subtotal'] / max(1, $item['quantity'])), 0, ',', '.') }} / unit</div>
+                                        <div class="quantity">Qty: {{ $item['quantity'] }}</div>
+                                    </div>
+                                </div>
+                                <div class="price">Rp {{ number_format($item['subtotal'], 0, ',', '.') }}</div>
                             </div>
-                            <div class="price">Rp {{ number_format($item['subtotal'], 0, ',', '.') }}</div>
-                        </div>
-                    @endforeach
+                        @endforeach
                 </div>
 
                 <div class="summary-calculation">
@@ -392,10 +405,7 @@
                         <span>Subtotal</span>
                         <span>Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
                     </div>
-                    <div class="summary-row">
-                        <span>Pengiriman</span>
-                        <span>Rp {{ number_format($shipping, 0, ',', '.') }}</span>
-                    </div>
+        
                     <div class="summary-row summary-total">
                         <span>Total</span>
                         <span>Rp {{ number_format($total, 0, ',', '.') }}</span>

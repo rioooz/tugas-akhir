@@ -14,7 +14,7 @@
 
         .data-header {
             padding: 20px;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid #efeee9;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -117,6 +117,17 @@
             color: #155724;
             border: 1px solid #c3e6cb;
         }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .badge-info { background: #17a2b8; color: #fff; }
+        .badge-warning { background: #ffc107; color: #222; }
+        .table-actions { text-align: right; white-space: nowrap; }
+        .data-table td.price-cell { color: #0e8f2c; font-weight: 700; }
     </style>
 
     <div class="data-card">
@@ -154,14 +165,30 @@
                                         Tanpa Gambar</div>
                                 @endif
                             </td>
-                            <td><strong>{{ $product->name }}</strong></td>
-                            <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
-                            <td>{{ $product->stock }} pcs</td>
+                            <td><strong>{{ $product->name }}</strong>
+                                @if($product->details()->count() > 0)
+                                    <div style="margin-top:6px; font-size:0.9rem; color:#666;">Varian: <span class="badge badge-warning">{{ $product->details()->count() }}</span></div>
+                                @endif
+                            </td>
+                            <td class="price-cell">Rp {{ number_format($product->price, 0, ',', '.') }}</td>
                             <td>
-                                <a href="{{ route('admin.barang.edit', $product->id) }}"
-                                    class="action-btn btn-edit">Edit</a>
-                                <form action="{{ route('admin.barang.destroy', $product->id) }}" method="POST"
-                                    style="display: inline;" onsubmit="return confirm('Yakin hapus produk ini?')">
+                                @php
+                                    $variantCount = $product->details()->count();
+                                    $variantStock = $variantCount ? $product->details()->sum('stock') : 0;
+                                @endphp
+                                @if($variantCount > 0)
+                                    <div>Parent: <strong>{{ $product->stock }}</strong> pcs</div>
+                                    <div style="margin-top:6px">Varian stok: <strong>{{ $variantStock }}</strong> pcs</div>
+                                @else
+                                    <div><strong>{{ $product->stock }}</strong> pcs</div>
+                                @endif
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.barang.edit', $product->id) }}" class="action-btn btn-edit">Edit</a>
+
+                                <a href="{{ route('admin.barang.details.index', $product->id) }}" class="action-btn" style="background:#17a2b8;color:#fff">Varian</a>
+
+                                <form action="{{ route('admin.barang.destroy', $product->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin hapus produk ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="action-btn btn-delete">Hapus</button>

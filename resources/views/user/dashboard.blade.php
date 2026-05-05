@@ -145,7 +145,7 @@
         <div class="dashboard-header">
             <h2>Dashboard Pelanggan</h2>
             <a href="{{ route('home') }}" class="btn"
-                style="background: #0e8f2c; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">Kembali
+                style="background: '#7B4019'; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">Kembali
                 ke beranda</a>
         </div>
 

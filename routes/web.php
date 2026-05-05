@@ -13,6 +13,10 @@ use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\StockInController;
 use App\Http\Controllers\Admin\ReportController;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\TestEmailController;
+use App\Http\Controllers\CekRestok;
+
 
 
 
@@ -29,6 +33,20 @@ use App\Http\Controllers\Admin\ReportController;
 
 use App\Http\Controllers\HomeController;
 
+
+
+    Route::get('/test-email', function () {
+    Mail::raw('Halo Rio, ini email dari website mahesty mebel ', function ($message) {
+        $message->to('emailtujuan@gmail.com') // GANTI EMAIL KAMU
+                ->subject('Test Email Laravel');
+    });
+
+    return "Email berhasil dikirim!";
+});
+
+Route::get('/test-email', [TestEmailController::class, 'send']);
+
+Route::get('/cek-restok', [CekRestok::class, 'cekRestok']);
 
 Route::get('/midtrans/test', function () {
     return 'MIDTRANS OK';
@@ -94,6 +112,16 @@ Route::middleware(['auth', 'admin'])->name('admin.')->prefix('admin')->group(fun
     Route::get('/', [DashboardController::class, 'index'])->name('index');
     Route::resource('barang', AdminProductController::class);
     
+    // Product item details (variants) nested under barang
+    Route::prefix('barang/{barang}/details')->name('barang.details.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\ProductItemDetailController::class, 'index'])->name('index');
+        Route::get('/create', [\App\Http\Controllers\Admin\ProductItemDetailController::class, 'create'])->name('create');
+        Route::post('/', [\App\Http\Controllers\Admin\ProductItemDetailController::class, 'store'])->name('store');
+        Route::get('/{detail}/edit', [\App\Http\Controllers\Admin\ProductItemDetailController::class, 'edit'])->name('edit');
+        Route::put('/{detail}', [\App\Http\Controllers\Admin\ProductItemDetailController::class, 'update'])->name('update');
+        Route::delete('/{detail}', [\App\Http\Controllers\Admin\ProductItemDetailController::class, 'destroy'])->name('destroy');
+    });
+    
     // Orders Routes
     Route::prefix('orders')->name('orders.')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('index');
@@ -129,8 +157,10 @@ Route::middleware(['auth', 'admin'])->name('admin.')->prefix('admin')->group(fun
             ->name('show');
     });
     Route::get('/laporan', [App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports.index');
+    Route::get('/laporan/revenue-month', [App\Http\Controllers\Admin\ReportController::class, 'revenueByMonth'])->name('reports.revenueByMonth');
     Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile.index');
     
     // Stock In Routes
     Route::resource('stock-in', StockInController::class);
+
 });

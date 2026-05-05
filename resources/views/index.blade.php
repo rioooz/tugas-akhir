@@ -64,11 +64,42 @@
             padding: 15px 15px 5px;
             font-weight: 600;
         }
-
-        .card .price {
-            padding: 5px 15px 15px;
+        .card .meta {
+            padding: 10px 15px 18px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .card .price-amount {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0e8f2c;
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg,#0e8f2c,#0a6b22);
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid #007bff;
+            color: #007bff;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
             align-items: center;
         }
     </style>
@@ -92,7 +123,7 @@
     <div class="hero-section">
         <h1>Mahesty Mebel</h1>
         <p>Temukan koleksi furniture berkualitas tinggi untuk melengkapi rumah impian Anda</p>
-        <a href="#products" class="btn">Lihat Produk</a>
+        <a href="#products" class="btn" style="background-color: #7B4019;">Lihat Produk</a>
     </div>
 
     <section id="products">
@@ -105,18 +136,17 @@
                 <div class="card">
                     <div class="img"><img src="{{ asset($product->image) }}" alt="{{ $product->name }}" /></div>
                     <div class="title">{{ $product->name }}</div>
-                    <div class="price">
-                        <div>Rp{{ number_format($product->price, 0, ',', '.') }}</div>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <form action="{{ route('cart.add', $product->id) }}" method="POST"
-                                style="display: inline; flex: 1; min-width: 120px;">
+                    <div class="meta">
+                        <div class="price-amount">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
+
+                        <div class="btn-group" style="margin-top:8px;">
+                            <form action="{{ route('cart.add', $product->id) }}" method="POST" style="display:inline;">
                                 @csrf
-                                <button type="submit" class="btn"
-                                    style="width: 100%; border: none; cursor: pointer; padding: 8px 12px; font-size: 0.9rem;">Tambah
-                                    Keranjang</button>
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="btn-sm btn-primary" style="background-color: #7B4019;">🛒 Keranjang</button>
                             </form>
-                            <a class="btn" href="{{ route('product.detail', $product->id) }}"
-                                style="flex: 1; min-width: 80px; background: #007bff; color: white; text-align: center; padding: 8px 12px; font-size: 0.9rem; text-decoration: none; border-radius: 4px; display: flex; align-items: center; justify-content: center;">Detail</a>
+
+                            <a href="{{ route('product.detail', $product->id) }}" class="btn-sm btn-outline">Detail</a>
                         </div>
                     </div>
                 </div>

@@ -73,7 +73,7 @@
         .actions {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 10px;
         }
 
         .quantity {
@@ -133,12 +133,16 @@
         }
 
         .related-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s;
-        }
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s;
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
 
         .related-card:hover {
             transform: translateY(-5px);
@@ -156,20 +160,28 @@
         }
 
         .related-card .info {
-            padding: 12px;
-        }
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
 
-        .related-card .name {
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
+      .related-card .name {
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
 
-        .related-card .price {
-            color: #28a745;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* max 2 baris */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+      .related-card .price {
+    color: #28a745;
+    font-weight: 700;
+    margin-top: auto;
+}
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -199,25 +211,69 @@
 @section('extra_js')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const quantitySpan = document.querySelector('.quantity span');
-            const minusBtn = document.querySelector('.quantity button:first-child');
-            const plusBtn = document.querySelector('.quantity button:last-child');
-
+            // quantity handling
+            const qtyValue = document.getElementById('qty-value');
+            const qtyMinus = document.getElementById('qty-minus');
+            const qtyPlus = document.getElementById('qty-plus');
+            const qtyInput = document.getElementById('quantity-input');
             let quantity = 1;
+            let currentStock = {{ $product->stock }};
 
-            minusBtn.addEventListener('click', function() {
+            function updateQtyDisplay() {
+                qtyValue.textContent = quantity;
+                qtyInput.value = quantity;
+                qtyPlus.disabled = quantity >= currentStock;
+                qtyMinus.disabled = quantity <= 1;
+            }
+
+            qtyMinus.addEventListener('click', function() {
                 if (quantity > 1) {
                     quantity--;
-                    quantitySpan.textContent = quantity;
-                    document.getElementById('quantity-input').value = quantity;
+                    updateQtyDisplay();
                 }
             });
 
-            plusBtn.addEventListener('click', function() {
-                quantity++;
-                quantitySpan.textContent = quantity;
-                document.getElementById('quantity-input').value = quantity;
+            qtyPlus.addEventListener('click', function() {
+                if (quantity < currentStock) {
+                    quantity++;
+                    updateQtyDisplay();
+                }
             });
+
+            updateQtyDisplay();
+
+                // variant buttons
+                const variantButtons = document.querySelectorAll('.variant-btn');
+                const detailInput = document.getElementById('detail-id-input');
+                const stockInfo = document.getElementById('stock-info');
+                const priceEl = document.querySelector('.price');
+                let activeVariant = null;
+
+                variantButtons.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        variantButtons.forEach(b => b.style.boxShadow = 'none');
+                        this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
+                        const id = this.dataset.id;
+                        const price = this.dataset.price;
+                        const stock = parseInt(this.dataset.stock) || 0;
+                        detailInput.value = id;
+                        activeVariant = id;
+                        currentStock = stock;
+                        stockInfo.textContent = '📦 Stok varian: ' + currentStock + ' unit tersedia';
+                        priceEl.textContent = 'Rp' + Number(price).toLocaleString('id-ID');
+                        if (quantity > currentStock) {
+                            quantity = currentStock > 0 ? currentStock : 1;
+                        }
+                        updateQtyDisplay();
+                    });
+                });
+                // auto-select default variant: look for data-default="1" else pick first
+                if (variantButtons.length > 0) {
+                    const btnArray = Array.from(variantButtons);
+                    const defaultBtn = btnArray.find(b => b.dataset.default === '1') || btnArray[0];
+                    // small timeout to ensure UI ready
+                    setTimeout(() => defaultBtn.click(), 50);
+                }
         });
     </script>
 @endsection
@@ -237,7 +293,7 @@
                 <div class="price">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
 
                 <div class="stock-info">
-                    📦 Stok: {{ $product->stock }} unit tersedia
+                    <span id="stock-info">📦 Stok: {{ $product->stock }} unit tersedia</span>
                 </div>
 
                 <div class="description">
@@ -245,15 +301,33 @@
                 </div>
 
                 <div class="actions">
-                    <div class="quantity">
-                        <button type="button">-</button>
-                        <span>1</span>
-                        <button type="button">+</button>
+                    <div style="margin-bottom:12px">
+                        @if ($product->details()->count() > 0)
+                            <label style="display:block;margin-bottom:6px;font-weight:600">Pilih Varian</label>
+                            <div id="variant-buttons" style="display:flex;gap:8px;flex-wrap:wrap;">
+                                @foreach ($product->details as $d)
+                                    <button type="button" class="variant-btn" data-id="{{ $d->id }}" data-price="{{ $d->price }}" data-stock="{{ $d->stock }}" style="padding:8px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer">
+                                        {{ $d->name }}{{ $d->size ? ' (' . $d->size . ')' : '' }}<br>
+                                        <small style="color:#28a745">Rp{{ number_format($d->price,0,',','.') }}</small>
+                                    </button>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
-                    <form action="{{ route('cart.add', $product->id) }}" method="POST">
+
+                    <div class="quantity" style="margin-bottom: 20px; margin-left: -120px;">
+                        <button type="button" id="qty-minus">-</button>
+                        <span id="qty-value">1</span>
+                        <button type="button" id="qty-plus">+</button>
+                    </div>
+                </div>
+                
+                <div style="margin-top:18px">
+                    <form id="add-to-cart-form" action="{{ route('cart.add', $product->id) }}" method="POST">
                         @csrf
                         <input type="hidden" name="quantity" value="1" id="quantity-input">
-                        <button type="submit" class="btn btn-primary">🛒 Tambah ke Keranjang</button>
+                        <input type="hidden" name="detail_id" value="" id="detail-id-input">
+                        <button type="submit" class="btn btn-primary" id="add-to-cart-btn" style="width:100%;padding:14px;border-radius:8px">🛒 Tambah ke Keranjang</button>
                     </form>
                 </div>
             </div>

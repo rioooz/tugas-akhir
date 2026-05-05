@@ -263,29 +263,103 @@
 
     <div class="report-card">
         <div class="report-header">
-            <h3 class="report-title">Tren Revenue (30 Hari Terakhir)</h3>
+            <h3 class="report-title">Tren Revenue (3 Bulan Terakhir)</h3>
         </div>
         <div class="report-body">
-            @if ($revenueTrend->count() > 0)
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Tanggal</th>
-                            <th>Revenue</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($revenueTrend as $trend)
-                            <tr>
-                                <td><strong>{{ \Carbon\Carbon::parse($trend->date)->format('d M Y') }}</strong></td>
-                                <td>Rp {{ number_format($trend->revenue, 0, ',', '.') }}</td>
-                            </tr>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px;">
+                <div>
+                    <label for="monthFilter" style="font-weight:600; color:#444; margin-right:8px">Filter Bulan:</label>
+                    <select id="monthFilter" style="padding:6px 10px; border-radius:6px; border:1px solid #ddd">
+                        <option value="">Seluruh (3 bulan)</option>
+                        @foreach($monthKeys as $idx => $mk)
+                            <option value="{{ $mk }}">{{ $labels[$idx] }}</option>
                         @endforeach
-                    </tbody>
-                </table>
-            @else
-                <div class="empty-message">Belum ada transaksi</div>
-            @endif
+                    </select>
+                </div>
+                <div style="color:#666; font-size:0.95rem">Nilai dalam Rupiah (Rp)</div>
+            </div>
+
+            <canvas id="revenueChart" height="120"></canvas>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        (function(){
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            const monthlyLabels = {!! json_encode($labels) !!};
+            const monthlyData = {!! json_encode($revenues) !!};
+            const monthKeys = {!! json_encode($monthKeys) !!};
+
+            let revenueChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: monthlyLabels,
+                    datasets: [{
+                        label: 'Revenue (Rp)',
+                        data: monthlyData,
+                        borderColor: '#28a745',
+                        backgroundColor: 'rgba(40,167,69,0.08)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#28a745'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) { return 'Rp ' + value.toLocaleString(); }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Rp ' + Number(context.parsed.y).toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            function setMonthlyView() {
+                revenueChart.data.labels = monthlyLabels;
+                revenueChart.data.datasets[0].data = monthlyData;
+                revenueChart.data.datasets[0].label = 'Revenue (Rp)';
+                revenueChart.update();
+            }
+
+            function setDailyView(labels, data, monthLabel) {
+                revenueChart.data.labels = labels;
+                revenueChart.data.datasets[0].data = data;
+                revenueChart.data.datasets[0].label = 'Revenue - ' + monthLabel;
+                revenueChart.update();
+            }
+
+            document.getElementById('monthFilter').addEventListener('change', function(e){
+                const val = e.target.value;
+                if (!val) {
+                    setMonthlyView();
+                    return;
+                }
+
+                // fetch daily revenue for selected month
+                fetch('{{ route("admin.reports.revenueByMonth") }}?month=' + val)
+                    .then(r => r.json())
+                    .then(json => {
+                        if (json.labels && json.data) {
+                            setDailyView(json.labels, json.data, json.monthLabel || val);
+                        }
+                    }).catch(err => {
+                        console.error(err);
+                        alert('Gagal mengambil data untuk bulan tersebut.');
+                    });
+            });
+        })();
+    </script>
 @endsection

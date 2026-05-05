@@ -34,13 +34,23 @@ class ReportController extends Controller
             ->with('productItem')
             ->get();
 
-        // Revenue trend (30 hari terakhir)
-        $revenueTrend = Order::selectRaw('DATE(created_at) as date, SUM(total) as revenue')
-            ->where('payment_status', 'paid')
-            ->where('created_at', '>=', Carbon::now()->subDays(30))
-            ->groupBy('date')
-            ->orderBy('date')
-            ->get();
+        // Revenue trend (3 bulan terakhir, per bulan)
+        $labels = [];
+        $revenues = [];
+        $monthKeys = [];
+        for ($i = 2; $i >= 0; $i--) {
+            $m = Carbon::now()->subMonths($i);
+            $start = $m->copy()->startOfMonth();
+            $end = $m->copy()->endOfMonth();
+            $label = $m->format('M Y');
+            $sum = Order::where('payment_status', 'paid')
+                ->whereBetween('created_at', [$start, $end])
+                ->sum('total');
+
+            $labels[] = $label;
+            $monthKeys[] = $m->format('Y-m');
+            $revenues[] = (int) $sum;
+        }
 
         // Product stock info
         $lowStockProducts = ProductItem::where('stock', '<', 10)->get();
@@ -52,9 +62,43 @@ class ReportController extends Controller
             'pendingOrders',
             'ordersByStatus',
             'topProducts',
-            'revenueTrend',
+            'labels',
+            'revenues',
+            'monthKeys',
             'lowStockProducts'
         ));
+    }
+
+    public function revenueByMonth(Request $request)
+    {
+        $month = $request->query('month'); // expected YYYY-MM
+        if (! $month || ! preg_match('/^\d{4}-\d{2}$/', $month)) {
+            return response()->json(['error' => 'Invalid month'], 400);
+        }
+
+        try {
+            $m = Carbon::createFromFormat('Y-m', $month);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Invalid month format'], 400);
+        }
+
+        $start = $m->copy()->startOfMonth();
+        $end = $m->copy()->endOfMonth();
+
+        $days = [];
+        $values = [];
+        $period = new \DatePeriod(new \DateTime($start->toDateString()), new \DateInterval('P1D'), (new \DateTime($end->toDateString()))->modify('+1 day'));
+        foreach ($period as $dt) {
+            $days[] = $dt->format('d M');
+            $dayStart = Carbon::parse($dt->format('Y-m-d'))->startOfDay();
+            $dayEnd = Carbon::parse($dt->format('Y-m-d'))->endOfDay();
+            $sum = Order::where('payment_status', 'paid')
+                ->whereBetween('created_at', [$dayStart, $dayEnd])
+                ->sum('total');
+            $values[] = (int) $sum;
+        }
+
+        return response()->json(['labels' => $days, 'data' => $values, 'monthLabel' => $m->format('F Y')]);
     }
 }
 
