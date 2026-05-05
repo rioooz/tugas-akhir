@@ -22,7 +22,8 @@ class CartController extends Controller
                 $detailId = (int)str_replace('detail_', '', $cartKey);
                 $detail = \App\Models\ProductItemDetail::find($detailId);
                 if (!$detail) continue;
-                $parent = $detail->productItem;
+                $parent = $detail->product;
+                if (!$parent) continue;
                 $price = $item['price'] ?? $detail->price;
                 $stock = $detail->stock;
                 $name = $parent->name . ' - ' . $detail->name . ($detail->size ? ' (' . $detail->size . ')' : '');
@@ -153,7 +154,7 @@ class CartController extends Controller
 
             if (isset($item['detail_id']) && $item['detail_id']) {
                 $detail = \App\Models\ProductItemDetail::findOrFail($item['detail_id']);
-                $product = $detail->productItem;
+                $product = $detail->product;
                 $stock = $detail->stock;
                 $price = $item['price'] ?? $detail->price;
             } else {
