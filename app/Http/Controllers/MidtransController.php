@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ProductItem;
+use App\Models\ProductItemDetail;
+use App\Services\WhatsAppService;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
 use Illuminate\Support\Facades\DB;
@@ -229,9 +231,34 @@ class MidtransController extends Controller
 
             // Kurangi stok produk (hanya jika belum dikurangi sebelumnya)
             foreach ($order->orderItems as $orderItem) {
-                $product = ProductItem::find($orderItem->product_item_id);
-                if ($product) {
-                    $product->decrement('stock', $orderItem->quantity);
+                $productName = '';
+                $variantName = null;
+                $currentStock = 0;
+
+                if ($orderItem->product_item_detail_id) {
+                    $detail = ProductItemDetail::find($orderItem->product_item_detail_id);
+                    if ($detail) {
+                        $detail->decrement('stock', $orderItem->quantity);
+                        $detail->refresh();
+                        $currentStock = $detail->stock;
+                        
+                        $product = ProductItem::find($orderItem->product_item_id);
+                        $productName = $product ? $product->name : 'Unknown Product';
+                        $variantName = $detail->name;
+                    }
+                } else {
+                    $product = ProductItem::find($orderItem->product_item_id);
+                    if ($product) {
+                        $product->decrement('stock', $orderItem->quantity);
+                        $product->refresh();
+                        $currentStock = $product->stock;
+                        $productName = $product->name;
+                    }
+                }
+
+                // Cek low stock alert (< 5)
+                if ($currentStock < 5 && $productName != '') {
+                    WhatsAppService::sendLowStockAlert($productName, $variantName, $currentStock);
                 }
             }
             

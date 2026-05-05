@@ -102,6 +102,11 @@ class ProductController extends Controller
             'image' => $product->image,
         ]);
 
+        // Cek low stock alert (< 5)
+        if ($product->stock < 5) {
+            \App\Services\WhatsAppService::sendLowStockAlert($product->name, null, $product->stock);
+        }
+
         return redirect()->route('admin.barang.index')
                         ->with('success','Produk berhasil diperbarui.');
     }

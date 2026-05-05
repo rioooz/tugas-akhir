@@ -53,7 +53,13 @@ class ProductItemDetailController extends Controller
 
         $detail->update($data);
 
+        // Cek low stock alert (< 5)
+        if ($detail->stock < 5) {
+            \App\Services\WhatsAppService::sendLowStockAlert($barang->name, $detail->name, $detail->stock);
+        }
+
         return redirect()->route('admin.barang.details.index', $barang->id)->with('success', 'Detail produk berhasil diperbarui.');
+
     }
 
     public function destroy(ProductItem $barang, ProductItemDetail $detail)
