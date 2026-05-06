@@ -9,6 +9,7 @@ use App\Models\ProductItem;
 use App\Enums\OrderStatus;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReportController extends Controller
 {
@@ -100,5 +101,40 @@ class ReportController extends Controller
 
         return response()->json(['labels' => $days, 'data' => $values, 'monthLabel' => $m->format('F Y')]);
     }
-}
 
+    /**
+     * Export Laporan ke PDF
+     */
+    public function export(Request $request)
+    {
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
+
+        $query = Order::where('payment_status', 'paid')
+            ->with(['user', 'orderItems.productItem'])
+            ->orderBy('created_at', 'desc');
+
+        if ($startDate) {
+            $query->whereDate('created_at', '>=', $startDate);
+        }
+        if ($endDate) {
+            $query->whereDate('created_at', '<=', $endDate);
+        }
+
+        $orders = $query->get();
+
+        $pdf = Pdf::loadView('admin.reports.pdf', compact('orders', 'startDate', 'endDate'));
+        
+        // Set paper size to A4
+        $pdf->setPaper('a4', 'portrait');
+
+        $filename = 'laporan_penjualan';
+        if ($startDate && $endDate) {
+            $filename .= '_' . $startDate . '_to_' . $endDate;
+        } else {
+            $filename .= '_' . date('Y-m-d');
+        }
+
+        return $pdf->download($filename . '.pdf');
+    }
+}

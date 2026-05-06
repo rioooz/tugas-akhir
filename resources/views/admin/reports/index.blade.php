@@ -157,6 +157,44 @@
         }
     </style>
 
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <div>
+            <h2 style="margin: 0; color: #333; font-weight: 700; font-size: 1.2rem;">Laporan Penjualan</h2>
+        </div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <label style="font-size: 0.85rem; font-weight: 600; color: #666;">Dari:</label>
+                <input type="date" id="start_date" style="padding: 6px 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9rem;">
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <label style="font-size: 0.85rem; font-weight: 600; color: #666;">Sampai:</label>
+                <input type="date" id="end_date" style="padding: 6px 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9rem;">
+            </div>
+            <button onclick="downloadPDF()" class="btn" style="background: #e43522; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <span>📄</span> Download Laporan (PDF)
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function downloadPDF() {
+            const start = document.getElementById('start_date').value;
+            const end = document.getElementById('end_date').value;
+            
+            let url = "{{ route('admin.reports.export') }}";
+            const params = new URLSearchParams();
+            
+            if (start) params.append('start_date', start);
+            if (end) params.append('end_date', end);
+            
+            if (params.toString()) {
+                url += '?' + params.toString();
+            }
+            
+            window.location.href = url;
+        }
+    </script>
+
     <div class="grid-2">
         <div class="stat-card" style="border-left-color: #007bff;">
             <div class="stat-icon">📊</div>
