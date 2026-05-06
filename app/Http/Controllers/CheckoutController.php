@@ -50,7 +50,8 @@ class CheckoutController extends Controller
                 $detailId = (int) str_replace('detail_', '', $cartKey);
                 $detail = \App\Models\ProductItemDetail::find($detailId);
                 if (!$detail) continue;
-                $parent = $detail->productItem;
+                $parent = $detail->product;
+                if (!$parent) continue;
                 $price = $item['price'] ?? $detail->price;
                 $itemTotal = $price * $item['quantity'];
                 $name =  $detail->name . ($detail->size ? ' (' . $detail->size . ')' : '');
@@ -143,7 +144,8 @@ class CheckoutController extends Controller
                     $detailId = (int) str_replace('detail_', '', $cartKey);
                     $detail = \App\Models\ProductItemDetail::find($detailId);
                     if (!$detail) continue;
-                    $parent = $detail->productItem;
+                    $parent = $detail->product;
+                    if (!$parent) continue;
                     $price = (int) ($item['price'] ?? $detail->price);
                     $qty = (int) $item['quantity'];
                     $subtotal += $price * $qty;
@@ -211,9 +213,10 @@ class CheckoutController extends Controller
             }
 
             // Prepare Midtrans Snap parameters
+            $midtransOrderId = 'ORDER-' . $order->id . '-' . time();
             $params = [
                 'transaction_details' => [
-                    'order_id' => 'ORDER-' . $order->id . '-' . time(),
+                    'order_id' => $midtransOrderId,
                     'gross_amount' => (int) $total,
                 ],
                 'item_details' => $itemDetails,
@@ -248,6 +251,7 @@ class CheckoutController extends Controller
             // Update order dengan snap token
             $order->update([
                 'snap_token' => $snapToken,
+                'midtrans_order_id' => $midtransOrderId,
             ]);
 
             DB::commit();

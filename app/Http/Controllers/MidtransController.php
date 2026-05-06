@@ -16,6 +16,15 @@ use Midtrans\Notification;
 
 class MidtransController extends Controller
 {
+    public function __construct()
+    {
+        \Midtrans\Config::$serverKey = config('midtrans.server_key');
+        \Midtrans\Config::$clientKey = config('midtrans.client_key');
+        \Midtrans\Config::$isProduction = config('midtrans.is_production') === true;
+        \Midtrans\Config::$isSanitized = true;
+        \Midtrans\Config::$is3ds = true;
+    }
+
     /**
      * Handle Midtrans notification/callback
      * Route ini harus diakses oleh Midtrans server (POST request)
@@ -23,11 +32,6 @@ class MidtransController extends Controller
     public function notification(Request $request)
     {
         try {
-
-            \Midtrans\Config::$serverKey = config('midtrans.server_key');
-            \Midtrans\Config::$isProduction = config('midtrans.is_production');
-            \Midtrans\Config::$isSanitized = config('midtrans.is_sanitized');
-            \Midtrans\Config::$is3ds = config('midtrans.is_3ds');
             // Log raw notification for debugging
             \Log::debug('Midtrans Raw Notification', $request->all());
             
@@ -150,13 +154,16 @@ class MidtransController extends Controller
         try {
             $order = Order::findOrFail($orderId);
             
-            if (!$order->transaction_id) {
-                \Log::warning('Midtrans Check Status: No transaction ID', ['order_id' => $orderId]);
-                return response()->json(['status' => 'error', 'message' => 'Transaction ID not found'], 404);
+            // Gunakan transaction_id jika ada, jika tidak gunakan midtrans_order_id
+            $idToCheck = $order->transaction_id ?: $order->midtrans_order_id;
+
+            if (!$idToCheck) {
+                \Log::warning('Midtrans Check Status: No identifier found', ['order_id' => $orderId]);
+                return response()->json(['status' => 'error', 'message' => 'ID Transaksi tidak ditemukan. Silakan lakukan pembayaran terlebih dahulu.'], 404);
             }
 
             // Query status ke Midtrans
-            $statusResponse = \Midtrans\Transaction::status($order->transaction_id);
+            $statusResponse = \Midtrans\Transaction::status($idToCheck);
             
             \Log::info('Midtrans Status Check', [
                 'order_id' => $order->id,
@@ -199,20 +206,33 @@ class MidtransController extends Controller
                     'payment_status' => 'failed',
                 ]);
             } else {
-                return response()->json([
+                $response = [
                     'status' => 'pending',
                     'message' => 'Pembayaran masih dalam proses',
                     'payment_status' => 'pending',
                     'transaction_status' => $statusResponse->transaction_status,
-                ]);
+                ];
             }
+
+            if (request()->wantsJson() || request()->ajax()) {
+                return response()->json($response);
+            }
+
+            $type = $response['status'] == 'success' ? 'success' : ($response['status'] == 'info' ? 'info' : 'warning');
+            return redirect()->back()->with($type, $response['message']);
+
         } catch (\Exception $e) {
             \Log::error('Midtrans Check Status Error', [
                 'order_id' => $orderId,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+            
+            if (request()->wantsJson() || request()->ajax()) {
+                return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+            }
+            
+            return redirect()->back()->with('error', 'Gagal mengecek status: ' . $e->getMessage());
         }
     }
 
