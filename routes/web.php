@@ -70,6 +70,7 @@ Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout
 Route::get('/checkout/finish/{orderId}', [CheckoutController::class, 'finish'])->name('checkout.finish');
 Route::get('/checkout/unfinish/{orderId}', [CheckoutController::class, 'unfinish'])->name('checkout.unfinish');
 Route::get('/checkout/error/{orderId}', [CheckoutController::class, 'error'])->name('checkout.error');
+Route::get('/orders/{id}/check-status', [App\Http\Controllers\MidtransController::class, 'checkPaymentStatus'])->name('orders.check-status');
 
 // Midtrans Notification (POST only, no CSRF)
 Route::post('/midtrans/notification', [App\Http\Controllers\MidtransController::class, 'notification'])

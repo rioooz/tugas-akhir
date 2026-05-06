@@ -273,7 +273,7 @@
                     <div class="order-header">
                         <div class="order-id">Order #{{ $order->id }}</div>
                         <div class="order-date">{{ $order->created_at->format('d F Y') }}</div>
-                        <div class="order-status {{ $order->payment_status->value }}">
+                        <div class="order-status {{ $order->status->value }} {{ $order->payment_status->value }}">
                             @if ($order->payment_status->value == 'paid')
                                 Lunas
                             @elseif($order->payment_status->value == 'pending')
@@ -306,7 +306,13 @@
                     </div>
                     <div class="order-footer">
                         <div class="total">Total: Rp {{ number_format($order->total, 0, ',', '.') }}</div>
-                        <a class="btn-small" href="{{ route('orders.show', $order->id) }}">Lihat Detail</a>
+                        <div style="display: flex; gap: 10px;">
+                            @if ($order->payment_status->value == 'pending')
+                                <a class="btn-small" href="{{ route('orders.check-status', $order->id) }}"
+                                    style="background: #f39c12;">Cek Status</a>
+                            @endif
+                            <a class="btn-small" href="{{ route('orders.show', $order->id) }}">Lihat Detail</a>
+                        </div>
                     </div>
                 </div>
             @empty
