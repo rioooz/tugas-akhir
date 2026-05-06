@@ -99,8 +99,33 @@
         @yield('content')
     </main>
 
-    <footer class="footer" style="margin-top: 40px; padding: 20px; background: var(--muted); text-align: center;">
-        <p>&copy; {{ date('Y') }} Mahesty Mebel. All rights reserved.</p>
+    <footer class="footer" style="margin-top: 60px; padding: 40px 20px; background: #2c3e50; color: white; text-align: left;">
+        <div class="container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+            <div>
+                <h3 style="color: #0e8f2c; margin-bottom: 15px;">MAHESTY MEBEL</h3>
+                <p style="font-size: 0.9rem; line-height: 1.6; color: #bdc3c7;">
+                    Penyedia mebel berkualitas tinggi dengan desain modern dan klasik dengan kayu jati pilihan terbagus.
+                </p>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 15px; border-bottom: 2px solid #0e8f2c; display: inline-block; padding-bottom: 5px;">Kontak Kami</h4>
+                <ul style="list-style: none; padding: 0; font-size: 0.9rem; color: #bdc3c7;">
+                    <li style="margin-bottom: 10px;">📍 Jl. Raya Tajem, Sleman, DIY</li>
+                    <li style="margin-bottom: 10px;">📞 08156580019</li>
+                    <li style="margin-bottom: 10px;">✉️ mahestymebel@gmail.com</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 15px; border-bottom: 2px solid #0e8f2c; display: inline-block; padding-bottom: 5px;">Jam Operasional</h4>
+                <ul style="list-style: none; padding: 0; font-size: 0.9rem; color: #bdc3c7;">
+                    <li style="margin-bottom: 10px;">Senin - Sabtu: 08.00 - 17.00</li>
+                    <li style="margin-bottom: 10px;">Minggu: Tutup</li>
+                </ul>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #3e4f5f; font-size: 0.8rem; color: #7f8c8d;">
+            <p>&copy; {{ date('Y') }} Mahesty Mebel </p>
+        </div>
     </footer>
 
     @yield('scripts')
