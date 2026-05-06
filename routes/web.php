@@ -158,6 +158,7 @@ Route::middleware(['auth', 'admin'])->name('admin.')->prefix('admin')->group(fun
             ->name('show');
     });
     Route::get('/laporan', [App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports.index');
+    Route::get('/laporan/export', [App\Http\Controllers\Admin\ReportController::class, 'export'])->name('reports.export');
     Route::get('/laporan/revenue-month', [App\Http\Controllers\Admin\ReportController::class, 'revenueByMonth'])->name('reports.revenueByMonth');
     Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile.index');
     
