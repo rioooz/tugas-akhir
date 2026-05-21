@@ -84,7 +84,7 @@
         .sidebar .nav-link.active {
             background: rgba(255, 255, 255, 0.15);
             color: #fff;
-            border-left: 3px solid #e43522;
+            border-left: 3px solid #DBCEA5;
         }
 
         .sidebar .sidebar-brand {
@@ -119,7 +119,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul style="background-color: #6E5034;" class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul style="background-color: #8A7650;" class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.index') }}">
@@ -148,13 +148,10 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item {{ request()->routeIs('admin.barang.*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('admin.barang.index') }}">
-                    <i class="fas fa-fw fa-box-open"></i>
-                    <span>Barang</span>
-                    @if ($sidebarCriticalStockCount > 0)
-                        <span class="notification-badge">{{ $sidebarCriticalStockCount }}</span>
-                    @endif
+            <li class="nav-item {{ request()->routeIs('admin.daftar-barang.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.daftar-barang.index') }}">
+                    <i class="fas fa-fw fa-list"></i>
+                    <span>Daftar Barang</span>
                 </a>
             </li>
 
@@ -162,6 +159,16 @@
                 <a class="nav-link" href="{{ route('admin.stock-in.index') }}">
                     <i class="fas fa-fw fa-arrow-down"></i>
                     <span>Barang Masuk</span>
+                </a>
+            </li>
+
+            <li class="nav-item {{ request()->routeIs('admin.barang.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.barang.index') }}">
+                    <i class="fas fa-fw fa-box-open"></i>
+                    <span>Stock Barang</span>
+                    @if ($sidebarCriticalStockCount > 0)
+                        <span class="notification-badge">{{ $sidebarCriticalStockCount }}</span>
+                    @endif
                 </a>
             </li>
 
@@ -193,12 +200,20 @@
             </li>
 
             <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Nav Item - Logout -->
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">
+                    <i class="fas fa-fw fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+
 
         </ul>
         <!-- End of Sidebar -->
@@ -207,7 +222,7 @@
         <div id="content-wrapper" class="d-flex flex-column">
 
             <!-- Main Content -->
-            <div id="content" style="background-color: #fdf5eb;">
+            <div id="content" style="background-color: #ECE7D1;">
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">

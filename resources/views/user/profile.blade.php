@@ -12,8 +12,9 @@
 
         .profile-header h2 {
             font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
+            font-weight: 800;
+            color: #8A7650;
+            margin-bottom: 5px;
         }
 
         .profile-header p {
@@ -30,15 +31,25 @@
 
         .profile-card {
             background: #fff;
-            padding: 30px;
+            padding: 35px;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 5px 20px rgba(138, 118, 80, 0.08);
+            border: 1px solid rgba(219, 206, 165, 0.5);
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(138, 118, 80, 0.15);
         }
 
         .profile-card h4 {
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #8A7650;
             margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ECE7D1;
         }
 
         .form-group {
@@ -53,25 +64,41 @@
 
         .form-control {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            padding: 12px 15px;
+            border: 1px solid #DBCEA5;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #333;
+            transition: all 0.3s ease;
+            background-color: #fcfbf9;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #8A7650;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(138, 118, 80, 0.15);
         }
 
         .btn-submit {
-            background: #0e8f2c;
+            background: linear-gradient(135deg, #8A7650 0%, #6E5034 100%);
             color: white;
-            padding: 12px 25px;
+            padding: 14px 30px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 600;
+            font-size: 1.1rem;
             cursor: pointer;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(138, 118, 80, 0.3);
         }
 
         .btn-submit:hover {
-            background: #0a6b22;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(138, 118, 80, 0.5);
+            background: linear-gradient(135deg, #7A6640 0%, #5E4024 100%);
         }
     </style>
 @endsection

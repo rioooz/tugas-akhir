@@ -5,6 +5,10 @@
 
 @section('extra_css')
     <style>
+        /* Toastr customization */
+        #toast-container > .toast-error { background-color: #e43522; }
+        #toast-container > .toast-warning { background-color: #8A7650; }
+        
         .cart-container {
             max-width: 900px;
             margin: 40px auto;
@@ -81,7 +85,7 @@
         }
 
         .cart-item-quantity button:hover {
-            background: #0e8f2c;
+            background: #8A7650;
             color: white;
         }
 
@@ -196,87 +200,95 @@
             padding: 12px 30px;
             font-size: 1.1rem;
             border-radius: 8px;
-            background: linear-gradient(45deg, #0e8f2c, #0a6b22);
-            box-shadow: 0 4px 15px rgba(14, 143, 44, 0.4);
+            background: linear-gradient(45deg, #8A7650, #6E5034);
+            box-shadow: 0 4px 15px rgba(138, 118, 80, 0.4);
             transition: all 0.3s ease;
         }
 
         .checkout-btn-container .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(14, 143, 44, 0.6);
+            box-shadow: 0 6px 20px rgba(138, 118, 80, 0.6);
         }
 
         .empty-cart {
             text-align: center;
             padding: white;
-            border: 1px solid #e0f2e9;
+            border: 1px solid #DBCEA5;
             border-radius: 8px;
-            color: #0e8f2c;
+            color: #8A7650;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #ffffff;
+            border: 1px solid #8A7650;
+            border-radius: 8px;
+            color: #8A7650;
             text-decoration: none;
             font-weight: 500;
             transition: all 0.2s;
         }
 
         .btn-back:hover {
-            background: #0e8f2c;
+            background: #8A7650;
             color: white;
+            border-color: #8A7650;
+        }
 
-            border-color: #0e8f2c .alert {
-                padding: 15px;
-                border-radius: 8px;
-                margin-bottom: 20px;
-            }
+        .btn-back svg {
+            transition: transform 0.2s;
+        }
 
-            .alert-success {
-                background-color: #d4edda;
-                color: #155724;
-                border: 1px solid #c3e6cb;
-            }
-
-            .alert-error {
-                background-color: #f8d7da;
-                color: #721c24;
-                border: 1px solid #f5c6cb;
-            }
-
-            .btn-back {
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                padding: 10px 20px;
-                background: var(--card);
-                border: 1px solid var(--muted);
-                border-radius: 8px;
-                color: var(--accent);
-                text-decoration: none;
-                font-weight: 500;
-                transition: all 0.2s;
-            }
-
-            .btn-back:hover {
-                background: var(--accent);
-                color: white;
-                border-color: var(--accent);
-            }
-
-            .btn-back svg {
-                transition: transform 0.2s;
-            }
-
-            .btn-back:hover svg {
-                transform: translateX(-3px);
-            }
+        .btn-back:hover svg {
+            transform: translateX(-3px);
+        }
     </style>
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 @endsection
 
 @section('extra_js')
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "3000"
+        };
+
         const cartItems = @json($cartItems);
 
         function updateQuantity(productId, newQuantity) {
             // Validasi quantity
             if (newQuantity < 1) {
-                alert('Jumlah minimal adalah 1');
+                toastr.warning('Jumlah minimal adalah 1');
                 return;
             }
 
@@ -324,7 +336,7 @@
                             'id-ID');
 
                         // Update total cart (subtotal + shipping)
-                        const newTotal = data.total_raw + shipping;
+                        const newTotal = data.total_raw;
                         document.getElementById('cart-total').textContent = 'Rp ' + newTotal.toLocaleString('id-ID');
 
                         // Update cartItems array untuk sync data
@@ -365,14 +377,13 @@
                             });
                         }
                     } else {
-                        alert(data.message || 'Terjadi kesalahan saat mengupdate quantity');
-                        window.location.reload();
+                        toastr.error(data.message || 'Terjadi kesalahan saat mengupdate quantity');
+                        setTimeout(() => window.location.reload(), 1500);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert(error.message || 'Terjadi kesalahan saat mengupdate quantity');
-                    window.location.reload();
+                    toastr.error(error.message || 'Terjadi kesalahan saat mengupdate quantity');
                 })
                 .finally(() => {
                     // Enable tombol kembali

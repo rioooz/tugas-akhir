@@ -23,11 +23,11 @@
         }
 
         .nav-link:hover {
-            color: #0e8f2c;
+            color: #8A7650;
         }
 
         .btn {
-            background: #0e8f2c;
+            background: #8A7650;
             color: white;
             padding: 8px 16px;
             border-radius: 6px;
@@ -37,12 +37,12 @@
         }
 
         .btn:hover {
-            background: #e43522;
+            background: #6E5034;
         }
 
         .btn-outline {
-            border: 1px solid #0e8f2c;
-            color: #0e8f2c;
+            border: 1px solid #8A7650;
+            color: #8A7650;
             padding: 8px 16px;
             border-radius: 6px;
             text-decoration: none;
@@ -51,7 +51,7 @@
         }
 
         .btn-outline:hover {
-            background: #0e8f2c;
+            background: #8A7650;
             color: white;
         }
     </style>
@@ -99,31 +99,31 @@
         @yield('content')
     </main>
 
-    <footer class="footer" style="margin-top: 60px; padding: 40px 20px; background: #2c3e50; color: white; text-align: left;">
+    <footer class="footer" style="margin-top: 60px; padding: 40px 20px; background: #8E977D; color: white; text-align: left;">
         <div class="container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
             <div>
-                <h3 style="color: #0e8f2c; margin-bottom: 15px;">MAHESTY MEBEL</h3>
-                <p style="font-size: 0.9rem; line-height: 1.6; color: #bdc3c7;">
+                <h3 style="color: #ffffff; margin-bottom: 15px; letter-spacing: 1px;">MAHESTY MEBEL</h3>
+                <p style="font-size: 0.95rem; line-height: 1.6; color: #ECE7D1;">
                     Penyedia mebel berkualitas tinggi dengan desain modern dan klasik dengan kayu jati pilihan terbagus.
                 </p>
             </div>
             <div>
-                <h4 style="margin-bottom: 15px; border-bottom: 2px solid #0e8f2c; display: inline-block; padding-bottom: 5px;">Kontak Kami</h4>
-                <ul style="list-style: none; padding: 0; font-size: 0.9rem; color: #bdc3c7;">
-                    <li style="margin-bottom: 10px;">📍 Jl. Raya Tajem, Sleman, DIY</li>
-                    <li style="margin-bottom: 10px;">📞 08156580019</li>
-                    <li style="margin-bottom: 10px;">✉️ mahestymebel@gmail.com</li>
+                <h4 style="margin-bottom: 15px; border-bottom: 2px solid #DBCEA5; display: inline-block; padding-bottom: 5px; color: #ffffff;">Kontak Kami</h4>
+                <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: #ECE7D1;">
+                    <li style="margin-bottom: 12px;">📍 Jl. Raya Tajem, Sleman, DIY</li>
+                    <li style="margin-bottom: 12px;">📞 08156580019</li>
+                    <li style="margin-bottom: 12px;">✉️ mahestymebel@gmail.com</li>
                 </ul>
             </div>
             <div>
-                <h4 style="margin-bottom: 15px; border-bottom: 2px solid #0e8f2c; display: inline-block; padding-bottom: 5px;">Jam Operasional</h4>
-                <ul style="list-style: none; padding: 0; font-size: 0.9rem; color: #bdc3c7;">
-                    <li style="margin-bottom: 10px;">Senin - Sabtu: 08.00 - 17.00</li>
-                    <li style="margin-bottom: 10px;">Minggu: Tutup</li>
+                <h4 style="margin-bottom: 15px; border-bottom: 2px solid #DBCEA5; display: inline-block; padding-bottom: 5px; color: #ffffff;">Jam Operasional</h4>
+                <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: #ECE7D1;">
+                    <li style="margin-bottom: 12px;">🕒 Senin - Sabtu: 08.00 - 17.00</li>
+                    <li style="margin-bottom: 12px;">🕒 Minggu: Tutup</li>
                 </ul>
             </div>
         </div>
-        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #3e4f5f; font-size: 0.8rem; color: #7f8c8d;">
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(219, 206, 165, 0.3); font-size: 0.85rem; color: #ECE7D1;">
             <p>&copy; {{ date('Y') }} Mahesty Mebel </p>
         </div>
     </footer>
