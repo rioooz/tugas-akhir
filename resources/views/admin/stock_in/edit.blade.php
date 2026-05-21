@@ -6,24 +6,24 @@
 @section('content')
     <style>
         .card {
-            border: 1px solid #c8e6c9;
-            box-shadow: 0 2px 8px rgba(14, 143, 44, 0.1);
+            border: 1px solid #DBCEA5;
+            box-shadow: 0 2px 8px rgba(138, 118, 80, 0.1);
         }
 
         .form-label {
-            color: #2e7d32;
+            color: #8A7650;
             font-weight: 600;
         }
 
         .btn-submit {
-            background: #66bb6a;
-            border-color: #66bb6a;
+            background: #8A7650;
+            border-color: #8A7650;
             color: white;
         }
 
         .btn-submit:hover {
-            background: #4caf50;
-            border-color: #4caf50;
+            background: #736140;
+            border-color: #736140;
         }
     </style>
 
@@ -32,8 +32,8 @@
             <div class="col-md-8 mx-auto">
                 <div class="card">
                     <div class="card-header"
-                        style="background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%); color: #1b5e20;">
-                        <h4 class="mb-0">Edit Barang Masuk</h4>
+                        style="background: #8A7650; color: #ffffff; padding: 25px 35px; border-bottom: none;">
+                        <h4 class="mb-0" style="font-weight: 700; font-size: 1.4rem;">Edit Barang Masuk</h4>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('admin.stock-in.update', $stockIn->id) }}" method="POST">
@@ -41,19 +41,33 @@
                             @method('PUT')
 
                             <div class="form-group mb-4">
-                                <label for="product_item_id" class="form-label">Pilih Barang <span
+                                <label for="item_selection" class="form-label">Pilih Barang/Varian <span
                                         style="color: #e43522;">*</span></label>
-                                <select name="product_item_id" id="product_item_id"
-                                    class="form-control @error('product_item_id') is-invalid @enderror" required>
+                                @php
+                                    $selectedValue = $stockIn->product_item_detail_id ? 'variant_'.$stockIn->product_item_detail_id : 'product_'.$stockIn->product_item_id;
+                                @endphp
+                                <select name="item_selection" id="item_selection"
+                                    class="form-control @error('item_selection') is-invalid @enderror" required>
                                     <option value="">-- Pilih Barang --</option>
                                     @foreach ($products as $product)
-                                        <option value="{{ $product->id }}"
-                                            {{ $stockIn->product_item_id == $product->id ? 'selected' : '' }}>
-                                            {{ $product->name }} (Stok: {{ $product->stock }} {{ $product->satuan }})
-                                        </option>
+                                        @if($product->details && $product->details->count() > 0)
+                                            <optgroup label="{{ $product->name }}">
+                                                @foreach($product->details as $variant)
+                                                    <option value="variant_{{ $variant->id }}"
+                                                        {{ $selectedValue == 'variant_'.$variant->id ? 'selected' : '' }}>
+                                                        {{ $variant->name }} (Stok: {{ $variant->stock }})
+                                                    </option>
+                                                @endforeach
+                                            </optgroup>
+                                        @else
+                                            <option value="product_{{ $product->id }}"
+                                                {{ $selectedValue == 'product_'.$product->id ? 'selected' : '' }}>
+                                                {{ $product->name }} (Stok Umum: {{ $product->stock }})
+                                            </option>
+                                        @endif
                                     @endforeach
                                 </select>
-                                @error('product_item_id')
+                                @error('item_selection')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -90,12 +104,12 @@
 
                             <div class="form-group mb-4">
                                 <label class="form-label">Status</label>
-                                <p style="color: #2e7d32; font-weight: 600;">
+                                <p style="color: #8A7650; font-weight: 600;">
                                     @if ($stockIn->status === 'received')
-                                        <span class="badge" style="background: #c8e6c9; color: #2e7d32;">Diterima</span>
+                                        <span class="badge" style="background: #DBCEA5; color: #8A7650;">Diterima</span>
                                     @else
                                         <span class="badge"
-                                            style="background: #a5d6a7; color: #1b5e20;">Diverifikasi</span>
+                                            style="background: #8E977D; color: #fff;">Diverifikasi</span>
                                     @endif
                                 </p>
                             </div>

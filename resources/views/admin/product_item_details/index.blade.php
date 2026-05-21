@@ -5,72 +5,114 @@
 
 @section('content')
     <style>
-        .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
-            margin-top: 16px;
-        }
-
-        .variant-card {
-            background: #fff;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 10px rgba(138, 118, 80, 0.05);
             border-radius: 8px;
-            padding: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            overflow: hidden;
+            border: 1px solid #DBCEA5;
         }
 
-        .variant-meta { color: #555; font-size: 0.95rem; margin-bottom: 8px; }
-        .variant-name { font-weight: 700; color: #222; margin-bottom: 6px; }
-        .variant-price { color: #0e8f2c; font-weight: 800; font-size: 1.05rem; }
-        .variant-stock { margin-top: 8px; font-size: 0.95rem; }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #8A7650 0%, #6E5034 100%);
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(138, 118, 80, 0.2);
+            transition: all 0.3s ease;
+        }
 
-        .variant-actions { text-align: right; margin-top: 12px; }
-        .action-btn { display: inline-block; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight:600; margin-left:6px }
-        .btn-edit { background:#ffc107; color:#222 }
-        .btn-delete { background:#dc3545; color:#fff }
-        .btn-add { background:#28a745; color:#fff; padding:8px 14px; border-radius:6px; text-decoration:none }
+        .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(138, 118, 80, 0.3);
+            color: white;
+        }
+
+        th {
+            background: #ECE7D1;
+            color: #8A7650;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 2px solid #DBCEA5;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            color: #333;
+        }
+
+        tr:hover {
+            background: #fcfbf9;
+        }
+
+        .variant-stock { background: #8E977D; color: white; padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.5px; }
+        .action-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; }
+        
+        .btn-delete { background: #f8d7da; color: #dc3545; }
+        .btn-delete:hover { background: #dc3545; color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(220,53,69,0.2); }
         .empty-note { padding:40px; text-align:center; color:#999 }
     </style>
 
-    <div class="data-card">
-        <div class="data-header">
-            <h3 class="data-title">Detail untuk: {{ $barang->name }}</h3>
-            <a href="{{ route('admin.barang.details.create', $barang->id) }}" class="btn-add">+ Tambah Detail</a>
+    <a href="{{ route('admin.barang.index') }}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Kembali ke Stock Barang
+    </a>
+
+    <div class="data-card" style="background: white; border-radius: 12px; box-shadow: 0 5px 20px rgba(138, 118, 80, 0.15); overflow: hidden; margin: 0 auto; border: 1px solid rgba(219, 206, 165, 0.5);">
+        <div class="data-header" style="background: #8A7650; color: #ffffff; padding: 25px 35px; display: flex; justify-content: space-between; align-items: center;">
+            <h3 class="data-title" style="margin: 0; font-size: 1.4rem; font-weight: 700; color: #ffffff;"><i class="fas fa-boxes"></i> Detail Varian: {{ $barang->name }}</h3>
         </div>
+
+        <div style="padding: 35px;">
 
         @if (session('success'))
             <div class="alert alert-success">✓ {{ session('success') }}</div>
         @endif
 
         @if ($details->count() > 0)
-            <div class="detail-grid">
-                @foreach ($details as $d)
-                    <div class="variant-card">
-                        <div>
-                            <div class="variant-name">{{ $d->name ?? '—' }}</div>
-                            <div class="variant-meta">Ukuran: {{ $d->size ?? '-' }}</div>
-                            <div class="variant-price">Rp {{ number_format($d->price,0,',','.') }}</div>
-                            <div class="variant-stock">Stok: <strong>{{ $d->stock }}</strong> pcs</div>
-                        </div>
-
-                        <div class="variant-actions">
-                            <a href="{{ route('admin.barang.details.edit', ['barang' => $barang->id, 'detail' => $d->id]) }}" class="action-btn btn-edit">Edit</a>
-                            <form action="{{ route('admin.barang.details.destroy', ['barang' => $barang->id, 'detail' => $d->id]) }}" method="POST" style="display:inline" onsubmit="return confirm('Yakin hapus detail ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button class="action-btn btn-delete">Hapus</button>
-                            </form>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Varian</th>
+                        <th>Ukuran</th>
+                        <th>Harga</th>
+                        <th>Stok</th>
+                        <th style="text-align: right;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($details as $d)
+                        <tr>
+                            <td><strong>{{ $d->name ?? '—' }}</strong></td>
+                            <td><i class="fas fa-ruler-combined" style="color:#8A7650"></i> {{ $d->size ?? '-' }}</td>
+                            <td><strong>Rp {{ number_format($d->price,0,',','.') }}</strong></td>
+                            <td><span class="variant-stock"><i class="fas fa-cubes"></i> &nbsp;{{ $d->stock }} pcs</span></td>
+                            <td style="text-align: right;">
+                                <form action="{{ route('admin.barang.details.destroy', ['barang' => $barang->id, 'detail' => $d->id]) }}" method="POST" style="display:inline" onsubmit="return confirm('Yakin hapus varian ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="action-btn btn-delete"><i class="fas fa-trash"></i> Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
 
             <div style="margin-top:12px">{{ $details->links() }}</div>
         @else
             <div class="empty-note">Belum ada detail untuk produk ini.</div>
         @endif
+        </div>
     </div>
 @endsection

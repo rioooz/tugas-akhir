@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('page_title', 'Stock Barang')
-@section('breadcrumb', 'Stock Barang')
+@section('page_title', 'Daftar Barang')
+@section('breadcrumb', 'Daftar Barang')
 
 @section('content')
     <style>
@@ -88,6 +88,15 @@
             transition: all 0.3s;
         }
 
+        .btn-edit {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-edit:hover {
+            background: #e0a800;
+        }
+
         .btn-delete {
             background: #dc3545;
             color: white;
@@ -116,14 +125,15 @@
             font-weight: 600;
         }
         .badge-info { background: #17a2b8; color: #fff; }
-        .badge-warning { background: #8A7650; color: #fff; }
+        .badge-warning { background: #ffc107; color: #222; }
         .table-actions { text-align: right; white-space: nowrap; }
         .data-table td.price-cell { color: #8E977D; font-weight: 700; }
     </style>
 
     <div class="data-card">
         <div class="data-header">
-            <h3 class="data-title">Stock Barang</h3>
+            <h3 class="data-title">Daftar Barang</h3>
+            <a href="{{ route('admin.daftar-barang.create') }}" class="btn-add"><i class="fas fa-plus"></i> Tambah Jenis Barang</a>
         </div>
 
         @if (session('success'))
@@ -139,7 +149,7 @@
                         <th>Gambar</th>
                         <th>Nama Produk</th>
                         <th>Harga</th>
-                        <th>Stok</th>
+
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -155,27 +165,14 @@
                                         Tanpa Gambar</div>
                                 @endif
                             </td>
-                            <td><strong>{{ $product->name }}</strong>
-                                @if($product->details()->count() > 0)
-                                    <div style="margin-top:6px; font-size:0.9rem; color:#666;">Varian: <span class="badge badge-warning">{{ $product->details()->count() }}</span></div>
-                                @endif
-                            </td>
+                                <td><strong>{{ $product->name }}</strong></td>
                             <td class="price-cell">Rp {{ number_format($product->price, 0, ',', '.') }}</td>
+
                             <td>
-                                @php
-                                    $variantCount = $product->details()->count();
-                                    $variantStock = $variantCount ? $product->details()->sum('stock') : 0;
-                                @endphp
-                                @if($variantCount > 0)
-                                    <div>Varian stok: <strong>{{ $variantStock }}</strong> pcs</div>
-                                @else
-                                    <div><strong>{{ $product->stock }}</strong> pcs</div>
-                                @endif
-                            </td>
-                            <td>
+                                <a href="{{ route('admin.daftar-barang.edit', $product->id) }}" class="action-btn btn-edit">Edit</a>
                                 <a href="{{ route('admin.barang.details.index', $product->id) }}" class="action-btn" style="background:#8E977D;color:#fff">Varian</a>
 
-                                <form action="{{ route('admin.barang.destroy', $product->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin hapus produk ini?')">
+                                <form action="{{ route('admin.daftar-barang.destroy', $product->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin hapus barang ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="action-btn btn-delete">Hapus</button>

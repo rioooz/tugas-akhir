@@ -159,7 +159,7 @@
     <div style="clear: both;"></div>
 
     <div class="footer">
-        <p>Jepara, {{ date('d F Y') }}</p>
+        <p>Sleman, {{ date('d F Y') }}</p>
         <p>Hormat Kami,</p>
         <div class="signature">
             <p>( Admin Mahesty Mebel )</p>

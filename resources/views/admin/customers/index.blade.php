@@ -7,14 +7,15 @@
     <style>
         .data-card {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(138, 118, 80, 0.15);
             overflow: hidden;
+            border: 1px solid rgba(219, 206, 165, 0.5);
         }
 
         .data-header {
-            padding: 20px;
-            border-bottom: 1px solid #e9ecef;
+            padding: 25px 35px;
+            background: #8A7650;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -22,16 +23,23 @@
 
         .data-title {
             margin: 0;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #333;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
         }
 
         .search-box {
             padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid #DBCEA5;
+            border-radius: 6px;
             width: 250px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            border-color: #8A7650;
+            box-shadow: 0 0 0 3px rgba(138, 118, 80, 0.2);
         }
 
         .data-table {
@@ -42,51 +50,59 @@
         .data-table th {
             padding: 15px 20px;
             text-align: left;
-            font-weight: 600;
-            color: #666;
+            font-weight: 700;
+            color: #8A7650;
             font-size: 0.85rem;
             text-transform: uppercase;
-            background: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
+            background: #ECE7D1;
+            border-bottom: 2px solid #DBCEA5;
         }
 
         .data-table td {
             padding: 15px 20px;
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid #eee;
+            color: #333;
         }
 
         .data-table tbody tr:hover {
-            background: #f8f9fa;
+            background: #fcfbf9;
         }
 
         .action-btn {
             display: inline-block;
-            padding: 6px 12px;
+            padding: 8px 14px;
             margin-right: 5px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.85rem;
+            font-weight: 600;
             text-decoration: none;
             transition: all 0.3s;
         }
 
         .btn-view {
-            background: #17a2b8;
+            background: #8A7650;
             color: white;
         }
 
         .btn-view:hover {
-            background: #138496;
+            background: #6E5034;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(138, 118, 80, 0.2);
         }
 
         .btn-delete {
-            background: #dc3545;
-            color: white;
+            background: transparent;
+            color: #dc3545;
+            border: 1px solid #dc3545;
         }
 
         .btn-delete:hover {
-            background: #c82333;
+            background: #dc3545;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
         }
 
         .pagination {
@@ -99,16 +115,18 @@
         .pagination a,
         .pagination span {
             padding: 8px 12px;
-            border: 1px solid #ddd;
+            border: 1px solid #DBCEA5;
             border-radius: 4px;
             text-decoration: none;
-            color: #007bff;
+            color: #8A7650;
+            font-weight: 600;
+            background: white;
         }
 
         .pagination .active {
-            background: #007bff;
+            background: #8A7650;
             color: white;
-            border-color: #007bff;
+            border-color: #8A7650;
         }
 
         .empty-message {
@@ -120,7 +138,7 @@
 
     <div class="data-card">
         <div class="data-header">
-            <h3 class="data-title">Daftar Pelanggan</h3>
+            <h3 class="data-title"><i class="fas fa-users"></i> Daftar Pelanggan</h3>
             <input type="text" class="search-box" placeholder="Cari pelanggan...">
         </div>
 

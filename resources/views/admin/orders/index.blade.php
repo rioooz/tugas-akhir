@@ -13,22 +13,27 @@
         }
 
         .filter-btn {
-            padding: 8px 16px;
-            border: 1px solid #ddd;
+            padding: 8px 18px;
+            border: 1px solid #DBCEA5;
             background: white;
-            border-radius: 4px;
+            color: #8A7650;
+            border-radius: 6px;
             cursor: pointer;
+            font-weight: 600;
             transition: all 0.3s;
+            text-decoration: none;
         }
 
         .filter-btn.active {
-            background: #007bff;
+            background: #8A7650;
             color: white;
-            border-color: #007bff;
+            border-color: #8A7650;
+            box-shadow: 0 4px 10px rgba(138, 118, 80, 0.2);
         }
 
-        .filter-btn:hover {
-            border-color: #007bff;
+        .filter-btn:hover:not(.active) {
+            border-color: #8A7650;
+            background: #ECE7D1;
         }
 
         .status-badge {
@@ -63,34 +68,38 @@
             width: 100%;
             border-collapse: collapse;
             background: white;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(138, 118, 80, 0.05);
+            border-radius: 8px;
             overflow: hidden;
+            border: 1px solid #DBCEA5;
         }
 
         th {
-            background: #f8f9fa;
-            padding: 12px;
+            background: #ECE7D1;
+            color: #8A7650;
+            padding: 15px;
             text-align: left;
-            font-weight: 600;
-            border-bottom: 2px solid #dee2e6;
+            font-weight: 700;
+            border-bottom: 2px solid #DBCEA5;
         }
 
         td {
-            padding: 12px;
-            border-bottom: 1px solid #dee2e6;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            color: #333;
         }
 
         tr:hover {
-            background: #f8f9fa;
+            background: #fcfbf9;
         }
 
         .action-btn {
-            padding: 6px 12px;
+            padding: 6px 14px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.85rem;
+            font-weight: 600;
             text-decoration: none;
             display: inline-block;
             margin-right: 5px;
@@ -98,21 +107,25 @@
         }
 
         .btn-view {
-            background: #17a2b8;
+            background: #8A7650;
             color: white;
         }
 
         .btn-view:hover {
-            background: #138496;
+            background: #6E5034;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(138, 118, 80, 0.2);
         }
 
         .btn-delete {
-            background: #dc3545;
-            color: white;
+            background: transparent;
+            color: #dc3545;
+            border: 1px solid #dc3545;
         }
 
         .btn-delete:hover {
-            background: #c82333;
+            background: #dc3545;
+            color: white;
         }
 
         .pagination {
@@ -125,16 +138,18 @@
         .pagination a,
         .pagination span {
             padding: 8px 12px;
-            border: 1px solid #ddd;
+            border: 1px solid #DBCEA5;
             border-radius: 4px;
             text-decoration: none;
-            color: #007bff;
+            color: #8A7650;
+            font-weight: 600;
+            background: white;
         }
 
         .pagination .active {
-            background: #007bff;
+            background: #8A7650;
             color: white;
-            border-color: #007bff;
+            border-color: #8A7650;
         }
 
         .empty-state {
@@ -144,10 +159,14 @@
         }
     </style>
 
-    <div class="data-card">
-        <div class="data-header">
-            <h3 class="data-title">Daftar Pesanan</h3>
+    <div class="data-card" style="background: white; border-radius: 12px; box-shadow: 0 5px 20px rgba(138, 118, 80, 0.15); overflow: hidden; border: 1px solid rgba(219, 206, 165, 0.5);">
+        <div class="data-header" style="background: #8A7650; color: #ffffff; padding: 25px 35px; border-bottom: none; display: flex; align-items: center; justify-content: space-between;">
+            <h3 class="data-title" style="margin: 0; font-size: 1.4rem; font-weight: 700; color: #ffffff;">
+                <i class="fas fa-shopping-basket"></i> Daftar Pesanan
+            </h3>
         </div>
+
+        <div style="padding: 35px;">
 
         @if (session('success'))
             <div style="padding: 12px; background: #d4edda; color: #155724; border-radius: 4px; margin-bottom: 20px;">
@@ -230,9 +249,10 @@
           </div>
         @else
             <div class="empty-state">
-                <i class="fas fa-inbox" style="font-size: 3rem; color: #ddd;"></i>
-                <p style="margin-top: 15px;">Belum ada pesanan</p>
+                <i class="fas fa-inbox" style="font-size: 3rem; color: #DBCEA5;"></i>
+                <p style="margin-top: 15px; color: #8A7650; font-weight: 600;">Belum ada pesanan</p>
             </div>
         @endif
+        </div>
     </div>
 @endsection

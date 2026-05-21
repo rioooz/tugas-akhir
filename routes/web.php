@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\DaftarBarangController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
@@ -111,7 +112,8 @@ Route::get('/admin', function () {
 
 Route::middleware(['auth', 'admin'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
-    Route::resource('barang', AdminProductController::class);
+    Route::resource('daftar-barang', DaftarBarangController::class);
+    Route::resource('barang', AdminProductController::class)->except(['edit', 'update']);
     
     // Product item details (variants) nested under barang
     Route::prefix('barang/{barang}/details')->name('barang.details.')->group(function () {

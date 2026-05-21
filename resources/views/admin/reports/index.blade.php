@@ -7,25 +7,34 @@
     <style>
         .stat-card {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(138, 118, 80, 0.1);
+            padding: 25px;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            border-left: 4px solid #007bff;
+            gap: 20px;
+            border: 1px solid rgba(219, 206, 165, 0.5);
+            border-left: 5px solid #8A7650;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(138, 118, 80, 0.15);
         }
 
         .stat-icon {
-            font-size: 2rem;
-            width: 60px;
-            height: 60px;
+            font-size: 2.2rem;
+            width: 65px;
+            height: 65px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #f8f9fa;
-            border-radius: 8px;
+            background: #fcfbf9;
+            border-radius: 10px;
+            color: #8A7650;
+            border: 1px solid rgba(219, 206, 165, 0.3);
         }
 
         .stat-content h3 {
@@ -38,29 +47,31 @@
 
         .stat-content .value {
             font-size: 1.8rem;
-            font-weight: 700;
-            color: #333;
+            font-weight: 800;
+            color: #8A7650;
             margin-top: 5px;
         }
 
         .report-card {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(138, 118, 80, 0.1);
             overflow: hidden;
             margin-bottom: 20px;
+            border: 1px solid rgba(219, 206, 165, 0.5);
         }
 
         .report-header {
-            padding: 20px;
-            border-bottom: 1px solid #e9ecef;
+            padding: 20px 25px;
+            border-bottom: 2px solid #DBCEA5;
+            background: #ECE7D1;
         }
 
         .report-title {
             margin: 0;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #333;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #8A7650;
         }
 
         .report-body {
@@ -73,14 +84,14 @@
         }
 
         .table th {
-            padding: 12px;
+            padding: 15px 20px;
             text-align: left;
-            font-weight: 600;
-            color: #666;
+            font-weight: 700;
+            color: #8A7650;
             font-size: 0.85rem;
             text-transform: uppercase;
-            background: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
+            background: #fcfbf9;
+            border-bottom: 2px solid #DBCEA5;
         }
 
         .table td {
@@ -119,23 +130,27 @@
         }
 
         .badge-primary {
-            background: #e7f3ff;
-            color: #004085;
+            background: #ECE7D1;
+            color: #8A7650;
+            border: 1px solid #DBCEA5;
         }
 
         .badge-success {
-            background: #d4edda;
-            color: #155724;
+            background: #E8EEDF;
+            color: #8E977D;
+            border: 1px solid #C8D1BB;
         }
 
         .badge-warning {
-            background: #fff3cd;
-            color: #856404;
+            background: #FDF9E8;
+            color: #B29124;
+            border: 1px solid #EBE1B1;
         }
 
         .badge-danger {
-            background: #f8d7da;
-            color: #721c24;
+            background: #fae3e5;
+            color: #dc3545;
+            border: 1px solid #f5c6cb;
         }
 
         .empty-message {
@@ -157,20 +172,20 @@
         }
     </style>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: white; padding: 25px 35px; border-radius: 12px; box-shadow: 0 5px 20px rgba(138,118,80,0.1); border: 1px solid rgba(219,206,165,0.5);">
         <div>
-            <h2 style="margin: 0; color: #333; font-weight: 700; font-size: 1.2rem;">Laporan Penjualan</h2>
+            <h2 style="margin: 0; color: #8A7650; font-weight: 800; font-size: 1.4rem;">Laporan Penjualan</h2>
         </div>
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <label style="font-size: 0.85rem; font-weight: 600; color: #666;">Dari:</label>
-                <input type="date" id="start_date" style="padding: 6px 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9rem;">
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <label style="font-size: 0.9rem; font-weight: 700; color: #8A7650;">Dari:</label>
+                <input type="date" id="start_date" style="padding: 10px 15px; border-radius: 8px; border: 1px solid #DBCEA5; font-size: 0.95rem; outline: none;">
             </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <label style="font-size: 0.85rem; font-weight: 600; color: #666;">Sampai:</label>
-                <input type="date" id="end_date" style="padding: 6px 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9rem;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <label style="font-size: 0.9rem; font-weight: 700; color: #8A7650;">Sampai:</label>
+                <input type="date" id="end_date" style="padding: 10px 15px; border-radius: 8px; border: 1px solid #DBCEA5; font-size: 0.95rem; outline: none;">
             </div>
-            <button onclick="downloadPDF()" class="btn" style="background: #e43522; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+            <button onclick="downloadPDF()" class="btn" style="background: linear-gradient(135deg, #8A7650 0%, #6E5034 100%); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(138, 118, 80, 0.2); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';">
                 <span>📄</span> Download Laporan (PDF)
             </button>
         </div>
@@ -196,32 +211,32 @@
     </script>
 
     <div class="grid-2">
-        <div class="stat-card" style="border-left-color: #007bff;">
-            <div class="stat-icon">📊</div>
+        <div class="stat-card" style="border-left-color: #8A7650;">
+            <div class="stat-icon" style="color: #8A7650;">📊</div>
             <div class="stat-content">
                 <h3>Total Pesanan</h3>
                 <div class="value">{{ $totalOrders }}</div>
             </div>
         </div>
 
-        <div class="stat-card" style="border-left-color: #28a745;">
-            <div class="stat-icon">💰</div>
+        <div class="stat-card" style="border-left-color: #8E977D;">
+            <div class="stat-icon" style="color: #8E977D;">💰</div>
             <div class="stat-content">
                 <h3>Total Pendapatan</h3>
                 <div class="value">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</div>
             </div>
         </div>
 
-        <div class="stat-card" style="border-left-color: #17a2b8;">
-            <div class="stat-icon">✓</div>
+        <div class="stat-card" style="border-left-color: #DBCEA5;">
+            <div class="stat-icon" style="color: #B29124;">✓</div>
             <div class="stat-content">
                 <h3>Pesanan Selesai</h3>
                 <div class="value">{{ $completedOrders }}</div>
             </div>
         </div>
 
-        <div class="stat-card" style="border-left-color: #ffc107;">
-            <div class="stat-icon">⏳</div>
+        <div class="stat-card" style="border-left-color: #6E5034;">
+            <div class="stat-icon" style="color: #6E5034;">⏳</div>
             <div class="stat-content">
                 <h3>Pesanan Pending</h3>
                 <div class="value">{{ $pendingOrders }}</div>
@@ -336,12 +351,12 @@
                     datasets: [{
                         label: 'Revenue (Rp)',
                         data: monthlyData,
-                        borderColor: '#28a745',
-                        backgroundColor: 'rgba(40,167,69,0.08)',
+                        borderColor: '#8A7650',
+                        backgroundColor: 'rgba(138, 118, 80, 0.1)',
                         fill: true,
                         tension: 0.3,
                         pointRadius: 4,
-                        pointBackgroundColor: '#28a745'
+                        pointBackgroundColor: '#8A7650'
                     }]
                 },
                 options: {

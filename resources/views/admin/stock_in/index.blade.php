@@ -6,32 +6,32 @@
 @section('content')
     <style>
         .card {
-            border: 1px solid #c8e6c9;
-            box-shadow: 0 2px 8px rgba(14, 143, 44, 0.1);
+            border: 1px solid #DBCEA5;
+            box-shadow: 0 2px 8px rgba(138, 118, 80, 0.1);
         }
 
         .btn-primary {
-            background: #66bb6a;
-            border-color: #66bb6a;
+            background: #8A7650;
+            border-color: #8A7650;
         }
 
         .btn-primary:hover {
-            background: #4caf50;
-            border-color: #4caf50;
+            background: #736140;
+            border-color: #736140;
         }
 
         .table-hover tbody tr:hover {
-            background-color: #f1f8f6;
+            background-color: #ECE7D1;
         }
 
         .badge-received {
-            background: #c8e6c9;
-            color: #2e7d32;
+            background: #DBCEA5;
+            color: #8A7650;
         }
 
         .badge-verified {
-            background: #a5d6a7;
-            color: #1b5e20;
+            background: #8E977D;
+            color: #fff;
         }
     </style>
 
@@ -40,8 +40,8 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center"
-                        style="background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);">
-                        <h3 class="mb-0" style="color: #1b5e20;">Daftar Barang Masuk</h3>
+                        style="background: linear-gradient(135deg, #DBCEA5 0%, #ECE7D1 100%);">
+                        <h3 class="mb-0" style="color: #8A7650;">Daftar Barang Masuk</h3>
                         <a href="{{ route('admin.stock-in.create') }}" class="btn btn-primary">
                             <i class="fas fa-plus"></i> Tambah Barang Masuk
                         </a>
@@ -50,15 +50,15 @@
                         @if ($stockIns->count() > 0)
                             <div class="table-responsive">
                                 <table class="table table-hover">
-                                    <thead style="background: #f1f8f6;">
+                                    <thead style="background: #DBCEA5;">
                                         <tr>
-                                            <th style="color: #2e7d32;">No</th>
-                                            <th style="color: #2e7d32;">Barang</th>
-                                            <th style="color: #2e7d32;">Jumlah</th>
-                                            <th style="color: #2e7d32;">Status</th>
-                                            <th style="color: #2e7d32;">Pencatat</th>
-                                            <th style="color: #2e7d32;">Tanggal</th>
-                                            <th style="color: #2e7d32;">Aksi</th>
+                                            <th style="color: #8A7650;">No</th>
+                                            <th style="color: #8A7650;">Barang</th>
+                                            <th style="color: #8A7650;">Jumlah</th>
+                                            <th style="color: #8A7650;">Status</th>
+                                            <th style="color: #8A7650;">Pencatat</th>
+                                            <th style="color: #8A7650;">Tanggal</th>
+                                            <th style="color: #8A7650;">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -67,9 +67,12 @@
                                                 <td>{{ $stockIns->firstItem() + $key }}</td>
                                                 <td>
                                                     <strong>{{ $stockIn->productItem->name }}</strong>
+                                                    @if($stockIn->productItemDetail)
+                                                        <br><small class="text-muted">Varian: {{ $stockIn->productItemDetail->name }}</small>
+                                                    @endif
                                                 </td>
                                                 <td>
-                                                    <span class="badge" style="background: #66bb6a; color: white;">
+                                                    <span class="badge" style="background: #8E977D; color: white;">
                                                         {{ $stockIn->quantity }} {{ $stockIn->productItem->satuan }}
                                                     </span>
                                                 </td>

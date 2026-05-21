@@ -26,12 +26,12 @@
         }
 
         .welcome-card {
-            background: linear-gradient(135deg, #0e8f2c 0%, #0a6b22 100%);
+            background: linear-gradient(135deg, #8A7650 0%, #6E5034 100%);
             color: white;
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 30px;
             margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(14, 143, 44, 0.2);
+            box-shadow: 0 5px 20px rgba(138, 118, 80, 0.2);
         }
 
         .welcome-card h3 {
@@ -57,7 +57,7 @@
         .stat-icon {
             font-size: 24px;
             margin-bottom: 10px;
-            color: #0e8f2c;
+            color: #8A7650;
         }
 
         .stat-value {
@@ -103,7 +103,7 @@
 
         .menu-icon {
             margin-right: 10px;
-            color: #0e8f2c;
+            color: #8A7650;
         }
 
         .menu-card p {
@@ -113,7 +113,7 @@
         }
 
         .menu-card .btn {
-            background: #0e8f2c;
+            background: #8A7650;
             color: white;
             text-decoration: none;
             padding: 10px 15px;
@@ -125,7 +125,7 @@
         }
 
         .menu-card .btn:hover {
-            background: #0a6b22;
+            background: #6E5034;
         }
 
         @media (max-width: 768px) {
@@ -145,7 +145,7 @@
         <div class="dashboard-header">
             <h2>Dashboard Pelanggan</h2>
             <a href="{{ route('home') }}" class="btn"
-                style="background: '#7B4019'; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">Kembali
+                style="background: #8E977D; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none;">Kembali
                 ke beranda</a>
         </div>
 

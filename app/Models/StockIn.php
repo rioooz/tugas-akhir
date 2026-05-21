@@ -11,6 +11,7 @@ class StockIn extends Model
 
     protected $fillable = [
         'product_item_id',
+        'product_item_detail_id',
         'quantity',
         'reference',
         'notes',
@@ -21,6 +22,11 @@ class StockIn extends Model
     public function productItem()
     {
         return $this->belongsTo(ProductItem::class);
+    }
+
+    public function productItemDetail()
+    {
+        return $this->belongsTo(ProductItemDetail::class);
     }
 
     public function user()

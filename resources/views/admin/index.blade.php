@@ -1,4 +1,4 @@
-﻿﻿@extends('layouts.admin')
+@extends('layouts.admin')
 
 @section('page_title', 'Dashboard')
 @section('breadcrumb', 'Dashboard')
@@ -30,24 +30,32 @@
         }
 
         .stat-card.primary {
-            border-left-color: #007bff;
+            border-left-color: #8A7650;
         }
 
         .stat-card.success {
-            border-left-color: #28a745;
+            border-left-color: #8E977D;
         }
 
         .stat-card.warning {
-            border-left-color: #ffc107;
+            border-left-color: #DBCEA5;
         }
 
         .stat-card.danger {
-            border-left-color: #dc3545;
+            border-left-color: #736140;
         }
 
         .stat-icon {
-            font-size: 2.5rem;
-            opacity: 0.15;
+            font-size: 2.2rem;
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fcfbf9;
+            border-radius: 10px;
+            border: 1px solid rgba(219, 206, 165, 0.4);
+            opacity: 1;
         }
 
         .stat-content h3 {
@@ -62,7 +70,7 @@
         .stat-value {
             font-size: 2rem;
             font-weight: 700;
-            color: #333;
+            color: #8A7650;
             margin-top: 10px;
         }
 
@@ -86,7 +94,7 @@
             margin: 0;
             font-size: 1.2rem;
             font-weight: 600;
-            color: #333;
+            color: #8A7650;
         }
 
         .data-table {
@@ -95,14 +103,14 @@
         }
 
         .data-table thead {
-            background: #f8f9fa;
+            background: #DBCEA5;
         }
 
         .data-table th {
             padding: 15px 20px;
             text-align: left;
             font-weight: 600;
-            color: #666;
+            color: #8A7650;
             font-size: 0.85rem;
             text-transform: uppercase;
             border-bottom: 2px solid #dee2e6;
@@ -129,7 +137,7 @@
         .action-link {
             display: inline-block;
             padding: 8px 12px;
-            background: #007bff;
+            background: #8A7650;
             color: white;
             text-decoration: none;
             border-radius: 4px;
@@ -138,7 +146,7 @@
         }
 
         .action-link:hover {
-            background: #0056b3;
+            background: #736140;
         }
 
         .empty-message {
@@ -186,7 +194,7 @@
         }
 
         .stock-badge {
-            background: #ff6b6b;
+            background: #e43522;
             color: white;
             padding: 4px 12px;
             border-radius: 12px;
@@ -195,37 +203,39 @@
         }
 
         .alert-danger {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            border-left-color: #dc3545;
+            background: #fcfbf9;
+            border: 1px solid #DBCEA5;
+            border-left-color: #e43522;
+            box-shadow: 0 4px 15px rgba(228, 53, 34, 0.05);
         }
 
         .alert-danger .alert-title {
-            color: #721c24;
+            color: #e43522;
         }
 
         .alert-danger .alert-items li {
-            color: #721c24;
-            border-bottom-color: #f5c6cb;
+            color: #444;
+            border-bottom-color: #eee;
         }
 
         .alert-success {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            border-left-color: #28a745;
+            background: #fcfbf9;
+            border: 1px solid #DBCEA5;
+            border-left-color: #8E977D;
+            box-shadow: 0 4px 15px rgba(142, 151, 125, 0.05);
         }
 
         .alert-success .alert-title {
-            color: #155724;
+            color: #8E977D;
         }
 
         .alert-success .alert-items li {
-            color: #155724;
-            border-bottom-color: #c3e6cb;
+            color: #444;
+            border-bottom-color: #eee;
         }
 
         .sales-badge {
-            background: #28a745;
+            background: #8E977D;
             color: white;
             padding: 4px 12px;
             border-radius: 12px;
@@ -290,9 +300,9 @@
                         </li>
                     @endforeach
                 </ul>
-                <p style="margin-top: 15px; margin-bottom: 0; font-size: 0.9rem; color: #721c24;">
-                    <a href="{{ route('admin.barang.index') }}"
-                        style="color: #721c24; font-weight: 600; text-decoration: none;">⚡ Restok Sekarang →</a>
+                <p style="margin-top: 15px; margin-bottom: 0; font-size: 0.9rem;">
+                    <a href="{{ route('admin.stock-in.index') }}"
+                        style="color: #e43522; font-weight: 600; text-decoration: none;">⚡ Restok Sekarang →</a>
                 </p>
             </div>
         @endif
@@ -311,31 +321,30 @@
                         @endif
                     @endforeach
                 </ul>
-                <p style="margin-top: 15px; margin-bottom: 0; font-size: 0.9rem; color: #155724;">
+                <p style="margin-top: 15px; margin-bottom: 0; font-size: 0.9rem;">
                     <a href="{{ route('admin.orders.index') }}"
-                        style="color: #155724; font-weight: 600; text-decoration: none;">📦 Lihat Pesanan Masuk →</a>
+                        style="color: #8E977D; font-weight: 600; text-decoration: none;">📦 Lihat Pesanan Masuk →</a>
                 </p>
             </div>
         @endif
 
         <!-- Unprocessed Orders Alert -->
         @if ($unprocessedOrders->count() > 0)
-            <div class="alert-box alert-info" style="border-left: 4px solid #0dcaf0; background: #f0f9ff;">
-                <h3 class="alert-title" style="color: #0c63e4;">⏳ Transaksi Menunggu: {{ $unprocessedOrders->count() }}
-                    Pesanan Belum Diproses</h3>
+            <div class="alert-box" style="background: #fcfbf9; border: 1px solid #DBCEA5; border-left: 4px solid #8A7650; box-shadow: 0 4px 15px rgba(138, 118, 80, 0.05);">
+                <h3 class="alert-title" style="color: #8A7650;">⏳ Transaksi Menunggu: {{ $unprocessedOrders->count() }} Pesanan Belum Diproses</h3>
                 <ul class="alert-items">
                     @foreach ($unprocessedOrders as $order)
-                        <li style="display: flex; justify-content: space-between; align-items: center;">
-                            <span><strong>#{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</strong> -
+                        <li style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee;">
+                            <span style="color: #444;"><strong>#{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</strong> -
                                 {{ $order->user->name ?? 'Pelanggan Tidak Diketahui' }}</span>
                             <span class="sales-badge"
-                                style="background: #0dcaf0;">Rp{{ number_format($order->total, 0, ',', '.') }}</span>
+                                style="background: #8A7650;">Rp{{ number_format($order->total, 0, ',', '.') }}</span>
                         </li>
                     @endforeach
                 </ul>
-                <p style="margin-top: 15px; margin-bottom: 0; font-size: 0.9rem; color: #0c63e4;">
+                <p style="margin-top: 15px; margin-bottom: 0; font-size: 0.9rem;">
                     <a href="{{ route('admin.orders.index') }}"
-                        style="color: #0c63e4; font-weight: 600; text-decoration: none;">⚙️ Proses Transaksi →</a>
+                        style="color: #8A7650; font-weight: 600; text-decoration: none;">⚙️ Proses Transaksi →</a>
                 </p>
             </div>
         @endif
@@ -402,7 +411,7 @@
                 });
                 criticalMessage += '</ul>';
                 criticalMessage +=
-                    '<a href="{{ route('admin.barang.index') }}" style="color: white; font-weight: bold; text-decoration: underline;">⚡ Restok Sekarang →</a>';
+                    '<a href="{{ route('admin.stock-in.index') }}" style="color: white; font-weight: bold; text-decoration: underline;">⚡ Restok Sekarang →</a>';
 
                 toastr.error(criticalMessage, '', {
                     timeOut: 0,
