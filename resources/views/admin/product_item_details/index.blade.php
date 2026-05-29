@@ -87,7 +87,6 @@
                         <th>Ukuran</th>
                         <th>Harga</th>
                         <th>Stok</th>
-                        <th style="text-align: right;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -97,13 +96,6 @@
                             <td><i class="fas fa-ruler-combined" style="color:#8A7650"></i> {{ $d->size ?? '-' }}</td>
                             <td><strong>Rp {{ number_format($d->price,0,',','.') }}</strong></td>
                             <td><span class="variant-stock"><i class="fas fa-cubes"></i> &nbsp;{{ $d->stock }} pcs</span></td>
-                            <td style="text-align: right;">
-                                <form action="{{ route('admin.barang.details.destroy', ['barang' => $barang->id, 'detail' => $d->id]) }}" method="POST" style="display:inline" onsubmit="return confirm('Yakin hapus varian ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="action-btn btn-delete"><i class="fas fa-trash"></i> Hapus</button>
-                                </form>
-                            </td>
                         </tr>
                     @endforeach
                 </tbody>

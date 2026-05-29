@@ -163,6 +163,7 @@ Route::middleware(['auth', 'admin'])->name('admin.')->prefix('admin')->group(fun
     Route::get('/laporan/export', [App\Http\Controllers\Admin\ReportController::class, 'export'])->name('reports.export');
     Route::get('/laporan/revenue-month', [App\Http\Controllers\Admin\ReportController::class, 'revenueByMonth'])->name('reports.revenueByMonth');
     Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
     
     // Stock In Routes
     Route::resource('stock-in', StockInController::class);
