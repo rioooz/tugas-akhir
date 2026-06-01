@@ -11,22 +11,6 @@
             margin: 0;
             padding: 0;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #444;
-            padding-bottom: 10px;
-        }
-        .header h1 {
-            margin: 0;
-            text-transform: uppercase;
-            color: #0e8f2c;
-        }
-        .header p {
-            margin: 5px 0;
-            font-size: 12px;
-            color: #666;
-        }
         .report-info {
             margin-bottom: 20px;
         }
@@ -42,7 +26,7 @@
             margin-bottom: 30px;
         }
         .table th {
-            background-color: #0e8f2c;
+            background-color: #8A7650;
             color: white;
             text-align: left;
             padding: 10px;
@@ -51,12 +35,12 @@
         }
         .table td {
             padding: 10px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #DBCEA5;
             font-size: 12px;
             vertical-align: top;
         }
         .table tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #ECE7D1;
         }
         .total-section {
             float: right;
@@ -64,7 +48,7 @@
         }
         .total-table {
             width: 100%;
-            border-top: 2px solid #444;
+            border-top: 2px solid #8A7650;
         }
         .total-table td {
             padding: 8px 0;
@@ -76,7 +60,7 @@
         .total-table .value {
             text-align: right;
             font-weight: bold;
-            color: #0e8f2c;
+            color: #8A7650;
         }
         .footer {
             margin-top: 50px;
@@ -93,11 +77,18 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>MAHESTY MEBEL</h1>
-        <p>Jl. Raya tajem Sleman, DIY</p>
-        <p>Email:mahestymebel@gmail.com | Telp: 08156580019</p>
-    </div>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px; border-bottom: 2px solid #DBCEA5; padding-bottom: 10px;">
+        <tr>
+            <td style="width: 80px; vertical-align: middle; padding-bottom: 10px;">
+                <img src="{{ public_path('assets/logoo.png') }}" style="width: 80px; height: auto;">
+            </td>
+            <td style="text-align: center; vertical-align: middle; padding-bottom: 10px; padding-right: 80px;">
+                <h1 style="margin: 0; text-transform: uppercase; color: #8A7650; font-size: 24px; font-weight: bold;">MAHESTY MEBEL</h1>
+                <p style="margin: 5px 0 0 0; font-size: 12px; color: #666;">Jl. Raya tajem Sleman, DIY</p>
+                <p style="margin: 3px 0 0 0; font-size: 12px; color: #666;">Email: mahestymebel@gmail.com | Telp: 08156580019</p>
+            </td>
+        </tr>
+    </table>
 
     <div class="report-info">
         <h2 style="text-align: center; font-size: 18px; margin-bottom: 15px;">LAPORAN PENJUALAN</h2>

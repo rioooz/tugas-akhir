@@ -174,12 +174,6 @@
                             </td>
                             <td>
                                 <a href="{{ route('admin.barang.details.index', $product->id) }}" class="action-btn" style="background:#8E977D;color:#fff">Varian</a>
-
-                                <form action="{{ route('admin.barang.destroy', $product->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin hapus produk ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="action-btn btn-delete">Hapus</button>
-                                </form>
                             </td>
                         </tr>
                     @endforeach

@@ -7,29 +7,31 @@
     <style>
         .card {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(138, 118, 80, 0.15);
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(219, 206, 165, 0.5);
         }
 
         .card-header {
-            padding: 20px;
-            border-bottom: 1px solid #e9ecef;
+            padding: 20px 35px;
+            background: #8A7650;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid #DBCEA5;
         }
 
         .card-title {
             margin: 0;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #333;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
         }
 
         .card-body {
-            padding: 20px;
+            padding: 30px 35px;
         }
 
         .info-grid {
@@ -40,14 +42,14 @@
         }
 
         .info-item {
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid #eee;
             padding-bottom: 15px;
         }
 
         .info-label {
             font-size: 0.85rem;
-            font-weight: 600;
-            color: #666;
+            font-weight: 700;
+            color: #8A7650;
             text-transform: uppercase;
             margin-bottom: 5px;
         }
@@ -60,7 +62,7 @@
         .edit-form {
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 1px solid #e9ecef;
+            border-top: 1px solid #DBCEA5;
         }
 
         .form-group {
@@ -77,37 +79,40 @@
         .form-control {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid #DBCEA5;
+            border-radius: 6px;
             font-size: 1rem;
             box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s ease;
         }
 
         .form-control:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+            border-color: #8A7650;
+            box-shadow: 0 0 0 3px rgba(138, 118, 80, 0.2);
         }
 
         .btn {
             padding: 10px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.3s;
             display: inline-block;
             text-decoration: none;
         }
 
         .btn-primary {
-            background: #007bff;
+            background: #8A7650;
             color: white;
         }
 
         .btn-primary:hover {
-            background: #0056b3;
+            background: #6E5034;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(138, 118, 80, 0.2);
         }
 
         .btn-danger {
@@ -117,15 +122,19 @@
 
         .btn-danger:hover {
             background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
         }
 
         .btn-secondary {
-            background: #6c757d;
+            background: #8E977D;
             color: white;
         }
 
         .btn-secondary:hover {
-            background: #545b62;
+            background: #737c63;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(142, 151, 125, 0.2);
         }
 
         .orders-table {
@@ -134,19 +143,20 @@
         }
 
         .orders-table th {
-            padding: 12px;
+            padding: 15px 20px;
             text-align: left;
-            font-weight: 600;
-            color: #666;
+            font-weight: 700;
+            color: #8A7650;
             font-size: 0.85rem;
             text-transform: uppercase;
-            background: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
+            background: #ECE7D1;
+            border-bottom: 2px solid #DBCEA5;
         }
 
         .orders-table td {
-            padding: 12px;
-            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            color: #333;
         }
 
         .status-badge {
@@ -179,7 +189,15 @@
 
         .back-btn {
             margin-bottom: 20px;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-4px);
         }
 
         .error-message {
@@ -189,7 +207,7 @@
         }
     </style>
 
-    <a href="{{ route('admin.customers.index') }}" class="back-btn" style="color: #007bff; text-decoration: none;">← Kembali ke
+    <a href="{{ route('admin.customers.index') }}" class="back-btn" style="color: #8A7650; text-decoration: none;">← Kembali ke
         Daftar Pelanggan</a>
 
     @if (session('success'))
@@ -227,7 +245,7 @@
             </div>
 
             <div class="edit-form">
-                <h4 style="margin-top: 0; margin-bottom: 15px;">Edit Data</h4>
+                <h4 style="margin-top: 0; margin-bottom: 20px; color: #8A7650; font-weight: 700;">Edit Data</h4>
                 <form action="{{ route('admin.customers.update', $customer->id) }}" method="POST">
                     @csrf
                     @method('PUT')
@@ -259,7 +277,7 @@
                         @enderror
                     </div>
 
-                    <div style="display: flex; gap: 10px;">
+                    <div style="display: flex; gap: 10px; margin-top: 25px;">
                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                         <a href="{{ route('admin.customers.index') }}" class="btn btn-secondary">Batal</a>
                     </div>
@@ -273,7 +291,7 @@
             <div class="card-header">
                 <h3 class="card-title">Riwayat Pesanan</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="padding: 0;">
                 <table class="orders-table">
                     <thead>
                         <tr>
@@ -314,13 +332,14 @@
         </div>
     @endif
 
-    <div style="margin-top: 20px; padding: 20px; background: #fff3cd; border-radius: 4px; color: #856404;">
-        <strong>⚠️ Zona Berbahaya:</strong>
+    <div style="margin-top: 20px; padding: 25px; background: #fdf8e2; border: 1px solid #DBCEA5; border-radius: 12px; color: #856404;">
+        <strong style="font-size: 1.1rem;"><i class="fas fa-exclamation-triangle"></i> Zona Berbahaya</strong>
+        <p style="margin: 8px 0 15px 0; color: #666; font-size: 0.95rem;">Setelah Anda menghapus pelanggan ini, data pelanggan beserta riwayat pesanannya tidak dapat dikembalikan.</p>
         <form action="{{ route('admin.customers.destroy', $customer->id) }}" method="POST" style="display: inline;"
             onsubmit="return confirm('Yakin hapus pelanggan ini? Semua data akan terhapus!')">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger" style="margin-top: 10px;">Hapus Pelanggan</button>
+            <button type="submit" class="btn btn-danger">Hapus Pelanggan</button>
         </form>
     </div>
 @endsection

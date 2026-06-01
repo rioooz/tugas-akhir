@@ -5,21 +5,17 @@
 
 @section('content')
     <style>
-        body {
-            background: #f0f8f4 !important;
-        }
-
         .profile-card {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(14, 143, 44, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(138, 118, 80, 0.15);
             overflow: hidden;
-            border: 1px solid #d4f1d4;
+            border: 1px solid rgba(219, 206, 165, 0.5);
         }
 
         .profile-header {
-            background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
-            padding: 30px;
+            background: linear-gradient(135deg, #8A7650 0%, #6E5034 100%);
+            padding: 35px 30px;
             text-align: center;
             color: white;
         }
@@ -50,14 +46,15 @@
 
         .profile-body {
             padding: 30px;
-            background: #fafcfb;
+            background: white;
         }
 
         .info-row {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #d4f1d4;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #DBCEA5;
         }
 
         .info-row:last-child {
@@ -65,20 +62,38 @@
         }
 
         .info-label {
-            font-weight: 600;
-            color: #2e7d32;
+            font-weight: 700;
+            color: #8A7650;
         }
 
         .info-value {
-            color: #558b2f;
+            color: #333;
+        }
+
+        .badge-custom-role {
+            background-color: #8E977D !important;
+            color: white !important;
+            font-size: 0.85rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .badge-custom-status {
+            background-color: #8A7650 !important;
+            color: white !important;
+            font-size: 0.85rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
         }
 
         .btn-edit {
-            background: #66bb6a;
+            background: #8E977D;
             color: white;
             border: none;
             padding: 12px 30px;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
@@ -87,60 +102,66 @@
         }
 
         .btn-edit:hover {
-            background: #4caf50;
+            background: #737c63;
             color: white;
             text-decoration: none;
             transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(142, 151, 125, 0.2);
         }
 
         .data-card {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(14, 143, 44, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(138, 118, 80, 0.15);
             overflow: hidden;
-            margin-top: 20px;
-            border: 1px solid #d4f1d4;
+            border: 1px solid rgba(219, 206, 165, 0.5);
+            margin-bottom: 25px;
         }
 
         .data-header {
-            padding: 20px;
-            border-bottom: 1px solid #d4f1d4;
-            background: linear-gradient(135deg, #f1f8f6 0%, #e8f5e9 100%);
+            padding: 20px 30px;
+            border-bottom: 1px solid #DBCEA5;
+            background: #8A7650;
         }
 
         .data-title {
             margin: 0;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #2e7d32;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
         }
 
         .data-body {
-            padding: 20px;
-            background: #fafcfb;
+            padding: 25px 30px;
+            background: white;
         }
 
         .notification-item {
             display: flex;
-            padding: 15px;
-            border-bottom: 1px solid #e8f5e9;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
             align-items: flex-start;
+        }
+
+        .notification-item:first-child {
+            padding-top: 0;
         }
 
         .notification-item:last-child {
             border-bottom: none;
+            padding-bottom: 0;
         }
 
         .notification-icon {
             width: 40px;
             height: 40px;
-            background: #c8e6c9;
+            background: #ECE7D1;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 15px;
-            color: #2e7d32;
+            color: #8A7650;
             flex-shrink: 0;
         }
 
@@ -156,13 +177,14 @@
 
         .notification-text {
             font-weight: 600;
-            color: #2e7d32;
+            color: #8A7650;
             margin-bottom: 5px;
         }
 
         .notification-amount {
             font-size: 0.9rem;
-            color: #558b2f;
+            color: #333;
+            font-weight: 700;
         }
 
         .data-table {
@@ -173,27 +195,34 @@
         .data-table th {
             padding: 15px 20px;
             text-align: left;
-            font-weight: 600;
-            color: #2e7d32;
+            font-weight: 700;
+            color: #8A7650;
             font-size: 0.85rem;
             text-transform: uppercase;
-            background: #f1f8f6;
-            border-bottom: 2px solid #c8e6c9;
+            background: #ECE7D1;
+            border-bottom: 2px solid #DBCEA5;
         }
 
         .data-table td {
             padding: 15px 20px;
-            border-bottom: 1px solid #e8f5e9;
+            border-bottom: 1px solid #eee;
+            color: #333;
         }
 
         .data-table tbody tr:hover {
-            background: #f1f8f6;
+            background: #fcfbf9;
         }
 
         .empty-message {
             text-align: center;
             padding: 30px;
-            color: #7cb342;
+            color: #8E977D;
+            font-weight: 600;
+        }
+
+        .form-control:focus {
+            border-color: #8A7650 !important;
+            box-shadow: 0 0 0 0.2rem rgba(138, 118, 80, 0.25) !important;
         }
     </style>
 
@@ -209,18 +238,18 @@
                 <div class="profile-body">
                     <div class="info-row">
                         <span class="info-label">Role:</span>
-                        <span class="info-value badge badge-success">{{ ucfirst($admin->role) }}</span>
+                        <span class="info-value badge-custom-role">{{ ucfirst($admin->role) }}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Status:</span>
-                        <span class="info-value badge badge-info">Aktif</span>
+                        <span class="info-value badge-custom-status">Aktif</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Bergabung:</span>
                         <span class="info-value">{{ $admin->created_at->format('d M Y') }}</span>
                     </div>
                     <div style="text-align: center; margin-top: 20px;">
-                        <a href="#" class="btn-edit">Edit Profil</a>
+                        <button type="button" class="btn-edit" data-toggle="modal" data-target="#editProfileModal">Edit Profil</button>
                     </div>
                 </div>
             </div>
@@ -288,6 +317,53 @@
                         <div class="empty-message">Belum ada riwayat transaksi pelanggan</div>
                     @endif
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius: 12px; overflow: hidden; border: 1px solid #DBCEA5; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+                <div class="modal-header" style="background-color: #8A7650; color: white;">
+                    <h5 class="modal-title" id="editProfileModalLabel" style="font-weight: 700;">✏️ Edit Profil Admin</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color: white; opacity: 0.8;">
+                        <span aria-hidden="true" style="color: white;">×</span>
+                    </button>
+                </div>
+                <form action="{{ route('admin.profile.update') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body" style="padding: 25px; background-color: #fcfbf9;">
+                        <div class="form-group mb-3">
+                            <label for="name" style="font-weight: 700; color: #8A7650;">Nama</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ $admin->name }}" required
+                                   style="border-radius: 6px; border: 1px solid #DBCEA5; background-color: white;">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="email" style="font-weight: 700; color: #8A7650;">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ $admin->email }}" required
+                                   style="border-radius: 6px; border: 1px solid #DBCEA5; background-color: white;">
+                        </div>
+                        <hr style="border-top: 1px solid #DBCEA5; margin: 20px 0;">
+                        <div class="form-group mb-3">
+                            <label for="password" style="font-weight: 700; color: #8A7650;">Password Baru (Opsional)</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Kosongkan jika tidak ingin diubah"
+                                   style="border-radius: 6px; border: 1px solid #DBCEA5; background-color: white;">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="password_confirmation" style="font-weight: 700; color: #8A7650;">Konfirmasi Password Baru</label>
+                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Ulangi password baru"
+                                   style="border-radius: 6px; border: 1px solid #DBCEA5; background-color: white;">
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="background-color: #ECE7D1; border-top: 1px solid #DBCEA5; padding: 15px 25px;">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal" 
+                                style="background-color: #8E977D; border: none; font-weight: 600; padding: 8px 20px; border-radius: 6px;">Batal</button>
+                        <button type="submit" class="btn btn-primary" 
+                                style="background-color: #8A7650; border: none; font-weight: 600; padding: 8px 20px; border-radius: 6px;">Simpan Perubahan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
