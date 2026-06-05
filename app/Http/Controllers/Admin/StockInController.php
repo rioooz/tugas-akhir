@@ -70,7 +70,6 @@ class StockInController extends Controller
             'status' => 'received',
         ]);
 
-        Session::flash('success', 'Barang masuk berhasil dicatat!');
         return redirect()->route('admin.stock-in.index');
     }
 
@@ -150,7 +149,6 @@ class StockInController extends Controller
             'notes' => $validated['notes'],
         ]);
 
-        Session::flash('success', 'Barang masuk berhasil diupdate!');
         return redirect()->route('admin.stock-in.index');
     }
 
@@ -178,7 +176,6 @@ class StockInController extends Controller
 
         $stockIn->delete();
 
-        Session::flash('success', 'Barang masuk berhasil dihapus!');
         return redirect()->route('admin.stock-in.index');
     }
 }

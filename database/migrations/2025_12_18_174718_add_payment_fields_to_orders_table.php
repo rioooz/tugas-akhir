@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('pesanan', function (Blueprint $table) {
             $table->string('snap_token')->nullable()->after('status');
             $table->string('payment_method')->nullable()->after('snap_token');
             $table->string('payment_status')->default('pending')->after('payment_method'); // pending, paid, failed, expired
@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('pesanan', function (Blueprint $table) {
             $table->dropColumn(['snap_token', 'payment_method', 'payment_status', 'transaction_id']);
         });
     }

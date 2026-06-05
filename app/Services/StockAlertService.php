@@ -19,12 +19,12 @@ class StockAlertService
         $end = Carbon::now()->endOfMonth();
         $start = (clone $end)->subMonths($months - 1)->startOfMonth();
 
-        $rows = DB::table('order_items')
-            ->selectRaw("SUM(order_items.quantity) as qty, DATE_FORMAT(orders.created_at, '%Y-%m') as ym")
-            ->join('orders', 'order_items.order_id', '=', 'orders.id')
-            ->where('order_items.product_item_id', $productId)
-            ->where('orders.payment_status', 'paid')
-            ->whereBetween('orders.created_at', [$start->toDateTimeString(), $end->toDateTimeString()])
+        $rows = DB::table('detail_pesanan')
+            ->selectRaw("SUM(detail_pesanan.quantity) as qty, DATE_FORMAT(pesanan.created_at, '%Y-%m') as ym")
+            ->join('pesanan', 'detail_pesanan.order_id', '=', 'pesanan.id')
+            ->where('detail_pesanan.product_item_id', $productId)
+            ->where('pesanan.payment_status', 'paid')
+            ->whereBetween('pesanan.created_at', [$start->toDateTimeString(), $end->toDateTimeString()])
             ->groupBy('ym')
             ->get();
 

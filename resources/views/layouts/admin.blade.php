@@ -408,62 +408,7 @@
             @endif
         });
 
-        // Show critical stock notification on all admin pages
-        @if ($sidebarCriticalStockCount > 0)
-            console.log('✅ CRITICAL STOCK ALERT ACTIVE');
-            console.log('Critical stock count: {{ $sidebarCriticalStockCount }}');
-            console.log('Toastr available:', typeof toastr !== 'undefined');
-
-            function showCriticalStockAlert() {
-                let criticalProducts = [
-                    @foreach ($sidebarCriticalStockProducts as $product)
-                        '{{ $product->name }} ({{ $product->stock }} pcs)',
-                    @endforeach
-                ];
-
-                console.log('✅ Critical products array:', criticalProducts);
-
-                if (criticalProducts.length === 0) {
-                    console.warn('⚠️ No critical products in array');
-                    return;
-                }
-
-                let criticalMessage = '<strong>🚨 STOK KRITIS - PERLU RESTOK SEGERA!</strong><br>';
-                criticalMessage += '<ul style="margin-top: 10px; margin-bottom: 5px; padding-left: 20px;">';
-                criticalProducts.forEach(function(product) {
-                    criticalMessage += '<li style="margin: 5px 0;">' + product + '</li>';
-                });
-                criticalMessage += '</ul>';
-                criticalMessage +=
-                    '<a href="{{ route('admin.barang.index') }}" style="color: white; font-weight: bold; text-decoration: underline;">⚡ Restok Sekarang →</a>';
-
-                console.log('✅ Calling toastr.error()');
-                toastr.error(criticalMessage, '', {
-                    timeOut: 0,
-                    extendedTimeOut: 0,
-                    closeButton: true,
-                    allowHtml: true,
-                    positionClass: "toast-top-right"
-                });
-            }
-
-            // Show immediately
-            if (document.readyState === 'loading') {
-                console.log('Document still loading, waiting for DOMContentLoaded');
-                document.addEventListener('DOMContentLoaded', showCriticalStockAlert);
-            } else {
-                console.log('Document already loaded, showing alert now');
-                showCriticalStockAlert();
-            }
-
-            // Backup: Show after 500ms
-            setTimeout(function() {
-                console.log('✅ Timeout callback - showing alert again');
-                showCriticalStockAlert();
-            }, 500);
-        @else
-            console.log('⚠️ No critical stock products (count: {{ $sidebarCriticalStockCount }})');
-        @endif
+        // Removed critical stock popup notification
     </script>
 
     @yield('scripts')
