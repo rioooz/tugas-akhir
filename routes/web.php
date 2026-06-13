@@ -113,7 +113,7 @@ Route::get('/admin', function () {
 Route::middleware(['auth', 'admin'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
     Route::resource('daftar-barang', DaftarBarangController::class);
-    Route::resource('barang', AdminProductController::class)->except(['edit', 'update']);
+    Route::resource('barang', AdminProductController::class);
     
     // Product item details (variants) nested under barang
     Route::prefix('barang/{barang}/details')->name('barang.details.')->group(function () {
