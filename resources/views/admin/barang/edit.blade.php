@@ -54,8 +54,8 @@
 
         .form-control:focus {
             outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+            border-color: #8A7650;
+            box-shadow: 0 0 0 3px rgba(138, 118, 80, 0.15);
         }
 
         textarea.form-control {
@@ -85,21 +85,21 @@
         }
 
         .btn-primary {
-            background: #007bff;
+            background: #8A7650;
             color: white;
         }
 
         .btn-primary:hover {
-            background: #0056b3;
+            background: #6E5034;
         }
 
         .btn-secondary {
-            background: #6c757d;
+            background: #8E977D;
             color: white;
         }
 
         .btn-secondary:hover {
-            background: #545b62;
+            background: #6D785C;
         }
 
         .btn-danger {
@@ -137,11 +137,13 @@
         .back-link {
             display: inline-block;
             margin-bottom: 20px;
-            color: #007bff;
+            color: #8A7650;
             text-decoration: none;
+            font-weight: 600;
         }
 
         .back-link:hover {
+            color: #6E5034;
             text-decoration: underline;
         }
 
@@ -268,17 +270,5 @@
             </div>
         </form>
 
-        <!-- Delete Section -->
-        <div class="delete-zone">
-            <h5>Hapus Produk</h5>
-            <p>Menghapus produk akan menghilangkan semua data yang terkait dengan produk ini. Tindakan ini tidak dapat
-                dibatalkan.</p>
-            <form action="{{ route('admin.barang.destroy', $product->id) }}" method="POST" style="display: inline;"
-                onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini? Tindakan ini tidak dapat dibatalkan.');">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Hapus Produk Ini</button>
-            </form>
-        </div>
     </div>
 @endsection

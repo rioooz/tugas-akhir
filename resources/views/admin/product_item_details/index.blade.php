@@ -59,6 +59,8 @@
         .variant-stock { background: #8E977D; color: white; padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.5px; }
         .action-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; }
         
+        .btn-edit-variant { background: #8A7650; color: white; }
+        .btn-edit-variant:hover { background: #6E5034; color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(138,118,80,0.2); }
         .btn-delete { background: #f8d7da; color: #dc3545; }
         .btn-delete:hover { background: #dc3545; color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(220,53,69,0.2); }
         .empty-note { padding:40px; text-align:center; color:#999 }
@@ -87,6 +89,7 @@
                         <th>Ukuran</th>
                         <th>Harga</th>
                         <th>Stok</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -96,6 +99,11 @@
                             <td><i class="fas fa-ruler-combined" style="color:#8A7650"></i> {{ $d->size ?? '-' }}</td>
                             <td><strong>Rp {{ number_format($d->price,0,',','.') }}</strong></td>
                             <td><span class="variant-stock"><i class="fas fa-cubes"></i> &nbsp;{{ $d->stock }} pcs</span></td>
+                            <td>
+                                <a href="{{ route('admin.barang.details.edit', ['barang' => $barang->id, 'detail' => $d->id]) }}" class="action-btn btn-edit-variant">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

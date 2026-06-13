@@ -173,7 +173,11 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('admin.barang.details.index', $product->id) }}" class="action-btn" style="background:#8E977D;color:#fff">Varian</a>
+                                @if($product->details()->count() > 0)
+                                    <a href="{{ route('admin.barang.details.index', $product->id) }}" class="action-btn" style="background:#8E977D;color:#fff"><i class="fas fa-boxes"></i> Varian</a>
+                                @else
+                                    <a href="{{ route('admin.barang.edit', $product->id) }}" class="action-btn" style="background:#8A7650;color:#fff"><i class="fas fa-edit"></i> Edit</a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
