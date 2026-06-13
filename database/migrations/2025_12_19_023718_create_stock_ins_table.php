@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stock_ins', function (Blueprint $table) {
+        Schema::create('barang_masuk', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_item_id')->constrained('product_items')->onDelete('cascade');
+            $table->foreignId('product_item_id')->constrained('barang')->onDelete('cascade');
             $table->integer('quantity');
             $table->string('reference')->nullable()->comment('Nomor referensi/PO');
             $table->text('notes')->nullable();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stock_ins');
+        Schema::dropIfExists('barang_masuk');
     }
 };

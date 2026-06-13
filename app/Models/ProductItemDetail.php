@@ -9,6 +9,8 @@ class ProductItemDetail extends Model
 {
     use HasFactory;
 
+    protected $table = 'varian_barang';
+
     protected $fillable = [
         'product_item_id',
         'name',

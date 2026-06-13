@@ -9,6 +9,8 @@ class StockIn extends Model
 {
     use HasFactory;
 
+    protected $table = 'barang_masuk';
+
     protected $fillable = [
         'product_item_id',
         'product_item_detail_id',

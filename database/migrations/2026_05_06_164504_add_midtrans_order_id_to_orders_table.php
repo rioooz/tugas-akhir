@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('pesanan', function (Blueprint $table) {
             $table->string('midtrans_order_id')->nullable()->after('snap_token');
         });
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('pesanan', function (Blueprint $table) {
             $table->dropColumn('midtrans_order_id');
         });
     }

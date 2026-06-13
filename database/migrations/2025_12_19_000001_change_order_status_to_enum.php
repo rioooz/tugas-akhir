@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         // For MySQL 5.7+ and PostgreSQL
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('pesanan', function (Blueprint $table) {
             // Change status column to enum
             $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])
                 ->default('pending')
@@ -31,7 +31,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('pesanan', function (Blueprint $table) {
             // Revert to string
             $table->string('status')->default('pending')->change();
             $table->string('payment_status')->nullable()->change();
